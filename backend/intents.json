@@ -1,0 +1,85 @@
+{
+    "intents": [
+      {
+        "tag":"Nombre",
+        "patterns": ["¿Cuál es tu nombre?", "¿Cómo te llamas?", "Nombre", "Tu nombre", "Quién eres?", "Quien eres"],
+        "responses": ["Soy LoyoBot, un asistente virtual de la Universidad Loyola.", "Me llamo LoyoBot, un asistente virtual de la Universidad Loyola.", "Soy LoyoBot, un asistente virtual de la Universidad Loyola. ¿En qué puedo ayudarte?"]
+      },
+      {
+        "tag": "saludo",
+        "patterns": ["Hola", "¿Cómo estás?", "¿Qué tal?", "Saludos", "hola", "como estas"],
+        "responses": ["¡Hola! ¿En qué puedo ayudarte?", "Hola, ¿cómo estás?", "¡Hola! ¿Cómo puedo asistirte?"]
+      },
+      {
+        "tag": "despedida",
+        "patterns": ["Adiós", "Hasta luego", "Nos vemos", "Chao", "adios", "chau"],
+        "responses": ["¡Adiós! Que tengas un buen día.", "Hasta luego. Si necesitas algo más, aquí estoy.", "Nos vemos. ¡Cuídate!"]
+      },
+      {
+        "tag": "sucursales",
+        "patterns": ["Cuántas sucursales tiene la universidad?", "Sucursales", "Donde se encuentra", "Sucursal"],
+        "responses": ["La Universidad Loyola en La Paz, Bolivia, tiene dos edificios principales:\n\nEdificio Principal (Bajo Següencoma): Este edificio, ubicado en la zona sur de La Paz, alberga clases de diferentes carreras.\n\nEdificio El Sauce (Avenida Busch y Jamaica): Este edificio está dedicado exclusivamente a clases de postgrado."]
+      },
+      {
+        "tag": "correo_estudiantil",
+        "patterns": ["La universidad cuenta con un correo estudiantil para sus estudiantes?", "Correo", "Correo Institucional", "hay Correo estudiantes", "Correo estudiantes", "institucional"],
+        "responses": ["Sí, este se debe adquirir hablando con su jefe de carreras."]
+      },
+      {
+        "tag": "carreras",
+        "patterns": ["Cuáles son las carreras que ofrece la universidad?", "Carreras", "Todas las carreras", "Que carreras tiene la universidad"],
+        "responses": ["La universidad cuenta con las carreras en las áreas:\n\nAdministración Ciencias Económicas y Financieras\n-Administración de Empresas\n-Ingeniería Comercial\n-Ingeniería Financiera\n-Ingeniería Económica\n-Auditoría o Contaduría Pública\n\nCiencias Naturales\nIngeniería de Medio Ambiente y RRNN\nIngeniería Agronómica\nIngeniería de Producción de Alimentos\nMedicina Veterinaria y Zootecnia\nLicenciatura en Gastronomía\nLicenciatura en Enfermería\nLicenciatura en Turismo y Hotelería\n\nCiencias Sociales\nLicenciatura en Derecho\nLicenciatura en Comunicación Social\nLicenciatura en Música\n\nTecnología\nIngeniería Civil\nIngeniería Industrial\nIngeniería de Sistemas\nIngeniería Mecánica\nIngeniería Electrónica\nIngeniería Electromecánica\nIngeniería en Construcciones\nIngeniería de Topografía y Geodesia\nCiencias Básicas"]
+      },
+      {
+        "tag": "becas",
+        "patterns": ["La universidad ofrece becas para sus estudiantes?", "Cómo puedo obtener una beca?", "becas", "hay becas", "La universidad tiene becas"],
+        "responses": ["Sí, la universidad ofrece becas a estudiantes, con altas notas, para obtener una beca, debes tener un promedio de 85 o más en tu carrera."]
+      },
+      {
+        "tag": "horarios",
+        "patterns": ["Cuál es el horario de atención de clases?", "Y el horario", "horario", "Cuales son los horarios", "horarios", "Que horarios tiene la universidad", "Los horarios son"],
+        "responses": ["El horario de clases es de 8:30 a 11:45 y de 19:30 a 22:00."]
+      },
+      {
+        "tag": "matricula",
+        "patterns": ["Cuál es el precio de la matrícula?", "Cada cuánto se paga la matrícula?", "Matricula", "Cuanto esta la matricula", "Cada cuanto se paga", "Matricula paga", "Costo matricula"],
+        "responses": ["El precio de la matrícula es de 1000 Bs y se paga cada año."]
+      },
+      {
+        "tag": "bus",
+        "patterns": ["¿Cuanto cuesta el bus de la universidad?", "El costo del bus de la universidad", "Cuanto cuesta el bus de la universidad mensualmente", "Presio del bus por mes", "Mensualidad del bus"],
+        "responses": ["El costo del bus de la universidad es de 160 Bs. por mes."]
+      },
+      {
+        "tag": "minibus",
+        "patterns": ["Cuales son los minibuses que pasan cerca de la Univesidad", "Que minibuses pasan por la universidad?", "Que minibuses recomiendas", "Como llego en minibus a la universidad", "Como llego en minibus"],
+        "responses": ["Los minibuses que pasan cerca de la universidad son: Bajo seguencoma, Obrajes Calatoco asta mi ultima actualizacion."]
+      },
+      {
+        "tag": "biblioteca",
+        "patterns": ["¿Cuál es el horario de la biblioteca?", "Horarios biblioteca", "A que hora abre la biblioteca", "Biblioteca horarios"],
+        "responses": ["El horario de la biblioteca es de 8:00 a 15:00.", "Es de 8:00 AM asta las 15:00"]
+      },
+      {
+        "tag": "aulas",
+        "patterns": ["¿Cuántas aulas tiene la universidad?", "Cuántas aulas hay en la universidad?", "Cantidad de aulas"],
+        "responses": ["La universidad cuenta con 200 y 300 aulas en la sucursal de bajo seguencoma."]
+      },
+      {
+        "tag": "Jefe_de_carrera",
+        "patterns": ["¿Quién es el jefe de carrera de la carrera de Ingeniería de Sistemas?", "Jefe de carrera sistemas", "Jefe de carrera de Ingeniería de Sistemas", "Jefe de carrera de Ingeniería de Sistemas", "Jefe de carrera de Ingeniería de Sistemas", "jefe sistemas"],
+        "responses": ["El jefe de carrera de Ingeniería de Sistemas es el M. Sc. Ramiro Jhonatan Pardo Foronda."]
+      },
+      {
+        "tag": "Ayuda",
+        "patterns": ["tengo problemas en pagar", "Donde debo acudir si tengo problemas al pagar", "Problemas de pago", "No puedo pagar la mensualidad", "No pagar mensualidad"],
+        "responses": ["Debes acudir a la oficina de KARDEX de la universidad para solucionar tus problemas de pago."]
+      },
+      {
+        "tag": "url",
+        "patterns": ["¿Cuál es la página web de la universidad?", "Página web", "URL", "Sitio web", "Web", "pagina", "tenemos pagina web de la universidad"],
+        "responses": ["La página web de la Universidad Loyola es: https://www.loyola.edu.bo/"]
+      }
+    ]
+}
+  
