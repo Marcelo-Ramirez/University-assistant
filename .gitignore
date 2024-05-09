@@ -1,2 +1,5 @@
 #React
 frontend/node_modules
+
+#Cache python
+backend/__pycache__
