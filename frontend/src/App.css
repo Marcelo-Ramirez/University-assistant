@@ -1,9 +1,18 @@
 /* App.css */
+.App {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+}
+
 .App-header {
-  background-color: #bc5d6e;
-  color: white;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
   padding: 10px;
   text-align: center;
+  border-radius: 20%;
 }
 
 .chat-container {
@@ -11,13 +20,14 @@
   flex-direction: column;
   align-items: center;
   padding: 20px;
+  flex: 1;
+  overflow-y: auto;
 }
 
 .messages {
-  height: 300px;
   width: 100%;
   overflow-y: auto;
-  border: 1px solid #ccc;
+  border: 1px solid #ffffff;
   margin-bottom: 10px;
   padding: 10px;
 }
@@ -36,17 +46,29 @@
 
 .divider {
   width: 100%;
-  display: grid;
-  grid-template-columns: 10% 80%;
+  display: flex; /* Usar flex para el layout del input y el button */
+  position: fixed;
+  bottom: 0;
+  background-color: #fff;
+  padding: 10px;
+  gap: 10px; /* Espacio entre el input y el button */
 }
 
 input[type="text"] {
   padding: 10px;
-  width: calc(100% - 22px); /* for padding and border */
-  margin-bottom: 10px;
+  margin-right: 10px;
+  flex: 1; /* Permite que el input ocupe todo el espacio disponible */
+  margin-bottom: 0; /* Alinear con el button */
+  border: 1px solid #ccc; /* Asegura un borde visible */
+  border-radius: 5px; /* Bordes redondeados */
 }
 
 button {
   padding: 10px 20px;
+  margin-left: 10px;
   cursor: pointer;
+  border: none; /* Sin borde para un aspecto más limpio */
+  background-color: #f94f00; /* Color de fondo */
+  color: white; /* Color del texto */
+  border-radius: 5px; /* Bordes redondeados */
 }
