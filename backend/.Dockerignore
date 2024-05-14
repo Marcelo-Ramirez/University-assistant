@@ -1,0 +1,8 @@
+# Ignorar archivos y directorios
+templates
+__pycacher__
+*.log
+*.env
+
+# Ignorar archivos específicos
+.dockerignore
