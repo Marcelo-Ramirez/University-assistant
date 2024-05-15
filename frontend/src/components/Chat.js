@@ -4,12 +4,12 @@ import Message from "./Message";
 function Chat() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [isSending, setIsSending] = useState(false); // Estado para bloquear el envío
+  const [isSending, setIsSending] = useState(false);
   const messagesEndRef = useRef(null);
-  const inputRef = useRef(null); // Referencia para el campo de entrada
+  const inputRef = useRef(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
@@ -18,7 +18,7 @@ function Chat() {
 
   const handleSend = () => {
     if (newMessage.trim() && !isSending) {
-      setIsSending(true); // Bloquea el envío de mensajes
+      setIsSending(true);
       const userMsg = {
         id: messages.length + 1,
         text: newMessage,
@@ -44,20 +44,17 @@ function Chat() {
         setMessages(prevMessages => [...prevMessages, serverMsg]);
       })
       .catch((error) => {
-        console.log(window.origin)
         console.error('Error:', error);
         const serverMsg = {
           id: messages.length + 2,
-          text: 'Error: No se pudo obtener respuesta del servidor',
+          text: 'Error: No se pudo obtener respuesta del servidor sdafdfasdfaadf',
           sender: "server",
         };
         setMessages(prevMessages => [...prevMessages, serverMsg]);
       })
       .finally(() => {
-        setIsSending(false); // Desbloquea el envío de mensajes
-        if (inputRef.current) {
-          inputRef.current.focus(); // Enfoca el campo de entrada
-        }
+        setIsSending(false);
+        inputRef.current?.focus();
       });
     }
   };
@@ -71,9 +68,8 @@ function Chat() {
         <div ref={messagesEndRef} />
       </div>
       <div className="divider">
-        <button onClick={handleSend} disabled={isSending}>Enviar</button>
         <input
-          ref={inputRef} // Asigna la referencia al campo de entrada
+          ref={inputRef}
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
@@ -84,9 +80,10 @@ function Chat() {
             }
           }}
           placeholder={isSending ? "Esperando respuesta..." : "Escribe un mensaje..."}
-          disabled={isSending} // Desactiva el input si está enviando
+          disabled={isSending}
         />
-      </div> 
+        <button onClick={handleSend} disabled={isSending}>Enviar</button>
+      </div>
     </div>
   );
 }

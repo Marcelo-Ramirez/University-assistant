@@ -1,18 +1,53 @@
 /* App.css */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%; /* Asegura que el root ocupe todo el ancho */
+}
+
 .App {
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 100vh;
+  height: 100%;
+  overflow: hidden; /* Evita el desplazamiento dentro de la aplicación */
 }
 
 .App-header {
   background-color: #ffffff;
   color: rgb(0, 0, 0);
-  padding: 10px;
+  flex-shrink: 0; /* Previene que el header se encoja */
+  width: 100%;
+  box-sizing: border-box; /* Incluye padding y borde en el ancho total */
+  position: fixed; /* Fija el header en la parte superior */
+  top: 0;
+  left: 0;
+  z-index: 1000; /* Asegura que el header esté por encima del contenido */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-content {
+  width: 100%;
+  padding: 20px; /* Ajusta el padding del contenido del header */
+  box-sizing: border-box; /* Incluye padding y borde en el ancho total */
   text-align: center;
-  border-radius: 20%;
+}
+
+.header-title {
+  font-size: 150%; /* Ajusta el tamaño de la fuente del título */
+  margin: 0; /* Elimina márgenes adicionales */
 }
 
 .chat-container {
@@ -21,15 +56,19 @@
   align-items: center;
   padding: 20px;
   flex: 1;
-  overflow-y: auto;
+  width: 100%; /* Asegura que el contenedor de chat ocupe todo el ancho disponible */
+  box-sizing: border-box; /* Incluye padding y borde en el ancho total */
+  margin-top: 40px; /* Ajusta el margen superior para dejar espacio para el header más pequeño */
+  margin-bottom: 60px; /* Espacio para el footer fijo */
 }
 
 .messages {
   width: 100%;
-  overflow-y: auto;
+  flex: 1; /* Permite que el contenedor de mensajes ocupe todo el espacio disponible */
+  overflow-y: auto; /* Permite el desplazamiento vertical dentro del área de mensajes */
   border: 1px solid #ffffff;
-  margin-bottom: 10px;
   padding: 10px;
+  box-sizing: border-box; /* Incluye padding y borde en el ancho total */
 }
 
 .message {
@@ -47,11 +86,15 @@
 .divider {
   width: 100%;
   display: flex; /* Usar flex para el layout del input y el button */
-  position: fixed;
-  bottom: 0;
   background-color: #fff;
   padding: 10px;
   gap: 10px; /* Espacio entre el input y el button */
+  flex-shrink: 0; /* Previene que el footer se encoja */
+  box-sizing: border-box; /* Incluye padding y borde en el ancho total */
+  position: fixed; /* Fija el footer en la parte inferior */
+  bottom: 0;
+  left: 0;
+  z-index: 1000; /* Asegura que el footer esté por encima del contenido */
 }
 
 input[type="text"] {
@@ -61,6 +104,7 @@ input[type="text"] {
   margin-bottom: 0; /* Alinear con el button */
   border: 1px solid #ccc; /* Asegura un borde visible */
   border-radius: 5px; /* Bordes redondeados */
+  box-sizing: border-box; /* Incluye padding y borde en el ancho total */
 }
 
 button {
@@ -71,4 +115,5 @@ button {
   background-color: #f94f00; /* Color de fondo */
   color: white; /* Color del texto */
   border-radius: 5px; /* Bordes redondeados */
+  box-sizing: border-box; /* Incluye padding y borde en el ancho total */
 }

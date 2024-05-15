@@ -6,11 +6,13 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Loyobot</h1>
+        <div className="header-content">
+          <h1 className="header-title">Loyobot</h1>
+        </div>
       </header>
       <Chat />
     </div>
   );
 }
-  
+
 export default App;
