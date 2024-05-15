@@ -1,18 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import Chat from './components/Chat';
-import logo from './loyola.png'; // Asegúrate de reemplazar 'path_to_your_image.png' con la ruta real a tu imagen
+import Switch from 'react-switch'; // Asegúrate de instalar 'react-switch'
 
 function App() {
+  const [isSecondaryInstance, setIsSecondaryInstance] = useState(false);
+
   return (
     <div className="App">
       <header className="App-header">
         <div className="header-content">
-        <img src={logo} alt="Logo" className="logo" />
           <h1 className="header-title">Loyobot</h1>
+          <Switch
+            checked={isSecondaryInstance}
+            onChange={setIsSecondaryInstance}
+            offColor="#888"
+            onColor="#0f0"
+            uncheckedIcon={false}
+            checkedIcon={false}
+            className="header-switch"
+          />
         </div>
       </header>
-      <Chat />
+      <Chat isSecondaryInstance={isSecondaryInstance} />
     </div>
   );
 }

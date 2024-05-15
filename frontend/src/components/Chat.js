@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Message from "./Message";
 import escudo from '../logo.png'; // Asegúrate de reemplazar 'path_to_your_image.png' con la ruta real a tu imagen
 
-function Chat() {
+function Chat({ isSecondaryInstance }) {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
@@ -32,35 +32,67 @@ function Chat() {
       setShowTemporaryDiv(false); // Oculta el div temporal
       setShowPredefinedQuestions(false); // Oculta las preguntas predefinidas
 
-      fetch(`${window.origin}/get`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message: message || newMessage }),
-      })
-      .then(response => response.json())
-      .then(data => {
-        const serverMsg = {
-          id: messages.length + 2,
-          text: data.response,
-          sender: "server",
-        };
-        setMessages(prevMessages => [...prevMessages, serverMsg]);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        const serverMsg = {
-          id: messages.length + 2,
-          text: 'Error: No se pudo obtener respuesta del servidor',
-          sender: "server",
-        };
-        setMessages(prevMessages => [...prevMessages, serverMsg]);
-      })
-      .finally(() => {
-        setIsSending(false);
-        inputRef.current?.focus();
-      });
+      if (isSecondaryInstance) {
+        // Guardar el mensaje en SQLite
+        fetch(`${window.origin}/save`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ message: message || newMessage }),
+        })
+        .then(() => {
+          const serverMsg = {
+            id: messages.length + 2,
+            text: 'Gracias por el aporte',
+            sender: "server",
+          };
+          setMessages(prevMessages => [...prevMessages, serverMsg]);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          const serverMsg = {
+            id: messages.length + 2,
+            text: 'Error: No se pudo guardar el mensaje',
+            sender: "server",
+          };
+          setMessages(prevMessages => [...prevMessages, serverMsg]);
+        })
+        .finally(() => {
+          setIsSending(false);
+          inputRef.current?.focus();
+        });
+      } else {
+        fetch(`${window.origin}/get`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ message: message || newMessage }),
+        })
+        .then(response => response.json())
+        .then(data => {
+          const serverMsg = {
+            id: messages.length + 2,
+            text: data.response,
+            sender: "server",
+          };
+          setMessages(prevMessages => [...prevMessages, serverMsg]);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          const serverMsg = {
+            id: messages.length + 2,
+            text: 'Error: No se pudo obtener respuesta del servidor',
+            sender: "server",
+          };
+          setMessages(prevMessages => [...prevMessages, serverMsg]);
+        })
+        .finally(() => {
+          setIsSending(false);
+          inputRef.current?.focus();
+        });
+      }
     }
   };
 
@@ -68,7 +100,10 @@ function Chat() {
     <div className="chat-container">
       {showTemporaryDiv && (
         <div className="temporary-div">
-          <img src={escudo} alt="Escudo" className="escudo" />
+          <div className="escudo-container">
+            <img src={escudo} alt="Escudo" className="escudo" />
+          </div>
+          <p>Este es un mensaje temporal</p>
         </div>
       )}
       <div className="messages">
