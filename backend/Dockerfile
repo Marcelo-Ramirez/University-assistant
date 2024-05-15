@@ -19,7 +19,7 @@ RUN python -m nltk.downloader punkt wordnet omw-1.4
 # Crea el directorio para la base de datos
 RUN mkdir -p /app/data
 
-# Instala sqlite3
+# Instala sqlite3 para debugging (opcional)
 RUN apt-get update && apt-get install -y sqlite3
 
 # Exponer el puerto en el que la aplicación estará corriendo
