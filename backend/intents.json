@@ -6,6 +6,11 @@
         "responses": ["Soy LoyoBot, un asistente virtual de la Universidad Loyola.", "Me llamo LoyoBot, un asistente virtual de la Universidad Loyola.", "Soy LoyoBot, un asistente virtual de la Universidad Loyola. ¿En qué puedo ayudarte?"]
       },
       {
+        "tag": "Mensualidad",
+        "patterns": ["¿Cuánto cuesta la mensualidad?", "¿Cuánto cuesta la mensualidad de la universidad?", "Mensualidad", "Costo mensualidad", "Cuanto cuesta la mensualidad", "Mensualidad de la universidad","mensualidad", "cuanto esta el mes"],
+        "responses": ["El costo de la mensualidad es de 890 Bs.", "La mensualidad cuesta 890 Bs.", "El costo de la mensualidad es de 890 Bs. ¿En qué más puedo ayudarte?"]
+      },
+      {
         "tag": "saludo",
         "patterns": ["Hola", "¿Cómo estás?", "¿Qué tal?", "Saludos", "hola", "como estas"],
         "responses": ["¡Hola! ¿En qué puedo ayudarte?", "Hola, ¿cómo estás?", "¡Hola! ¿Cómo puedo asistirte?"]
@@ -52,7 +57,7 @@
       },
       {
         "tag": "minibus",
-        "patterns": ["Cuales son los minibuses que pasan cerca de la Univesidad", "Que minibuses pasan por la universidad?", "Que minibuses recomiendas", "Como llego en minibus a la universidad", "Como llego en minibus"],
+        "patterns": ["Cuales son los minibuses que pasan cerca de la Univesidad", "Que minibuses pasan por la universidad?", "Que minibuses recomiendas", "Como llego en minibus a la universidad", "Como llego en minibus", "como llego a la u"],
         "responses": ["Los minibuses que pasan cerca de la universidad son: Bajo seguencoma, Obrajes Calatoco asta mi ultima actualizacion."]
       },
       {
@@ -79,6 +84,11 @@
         "tag": "url",
         "patterns": ["¿Cuál es la página web de la universidad?", "Página web", "URL", "Sitio web", "Web", "pagina", "tenemos pagina web de la universidad"],
         "responses": ["La página web de la Universidad Loyola es: https://www.loyola.edu.bo/"]
+      },
+      {
+        "tag": "Gracias",
+        "patterns": ["Gracias", "Gracias por tu ayuda", "Gracias por la información", "Gracias por la ayuda", "Gracias por responder", "Gracias por responder mis preguntas", "gracias", "gracias por todo"],
+        "responses": ["¡De nada! Estoy aquí para ayudarte.", "¡No hay de qué! Si tienes más preguntas, no dudes en decírmelo.","uwu"]
       }
     ]
 }

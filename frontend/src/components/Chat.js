@@ -19,6 +19,15 @@ function Chat({ isSecondaryInstance }) {
     scrollToBottom();
   }, [messages]);
 
+  // Effect to reset the state when isSecondaryInstance changes to true
+  useEffect(() => {
+    if (isSecondaryInstance) {
+      setMessages([]);
+      setShowTemporaryDiv(true);
+      setShowPredefinedQuestions(true);
+    }
+  }, [isSecondaryInstance]);
+
   const handleSend = (message) => {
     if ((message || newMessage.trim()) && !isSending) {
       setIsSending(true);
@@ -103,7 +112,7 @@ function Chat({ isSecondaryInstance }) {
           <div className="escudo-container">
             <img src={escudo} alt="Escudo" className="escudo" />
           </div>
-          <p>Este es un mensaje temporal</p>
+          {isSecondaryInstance && <p>Este es un mensaje temporal</p>}
         </div>
       )}
       <div className="messages">
@@ -112,10 +121,10 @@ function Chat({ isSecondaryInstance }) {
         ))}
         <div ref={messagesEndRef} />
       </div>
-      {showPredefinedQuestions && (
+      {isSecondaryInstance && showPredefinedQuestions && (
         <div className="predefined-questions">
           <button onClick={() => handleSend("¿Cuál es tu nombre?")}>¿Cuál es tu nombre?</button>
-          <button onClick={() => handleSend("¿Cómo estás hoy?")}>¿Cómo estás hoy?</button>
+          <button onClick={() => handleSend("¿Cómo estás hoy?")}>¿A cuanto esta la mensualidad?</button>
         </div>
       )}
       <div className="divider">

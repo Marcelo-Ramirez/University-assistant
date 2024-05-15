@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import logo from '../logo.png'; // Asegúrate de reemplazar 'path_to_your_image.png' con la ruta real a tu imagen
+import userIcon from '../iconouser.png'; // Asegúrate de reemplazar 'path_to_your_user_icon.png' con la ruta real a tu imagen
 
 function Message({ text, sender }) {
   const isUser = sender === 'user';
-  const icon = isUser ? '👤' : <img src={logo} alt="Logo" className="logochat" />; // Aquí está tu imagen
+  const icon = isUser ? <img src={userIcon} alt="User Icon" className="logochat" /> : <img src={logo} alt="Logo" className="logochat" />; // Aquí está tu imagen
   const [serverMessage, setServerMessage] = useState('');
   const messageEndRef = useRef(null); // Referencia para el final del mensaje
 
