@@ -179,6 +179,7 @@ button {
 .escudo {
   width: 100%; /* Ajusta el tamaño del logo */
   height: auto; /* Mantén la proporción del logo */
+  opacity: 0.5;
 }
 
 .logochat {
@@ -186,4 +187,5 @@ button {
   height: 25px; /* Ajusta este valor según sea necesario */
   margin-right: 5px; /* Añade un margen a la derecha para separar la imagen del texto */
   vertical-align: middle; /* Alinea verticalmente en el medio */
+  opacity: 0.5;
 }
