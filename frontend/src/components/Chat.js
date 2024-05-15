@@ -32,7 +32,7 @@ function Chat({ isSecondaryInstance }) {
       setShowTemporaryDiv(false); // Oculta el div temporal
       setShowPredefinedQuestions(false); // Oculta las preguntas predefinidas
 
-      if (isSecondaryInstance) {
+      if (!isSecondaryInstance) {
         // Guardar el mensaje en SQLite
         fetch(`${window.origin}/save`, {
           method: 'POST',
@@ -44,7 +44,7 @@ function Chat({ isSecondaryInstance }) {
         .then(() => {
           const serverMsg = {
             id: messages.length + 2,
-            text: 'Gracias por el aporte',
+            text: 'Gracias por contribuir con el entrenamiento de Loyobot',
             sender: "server",
           };
           setMessages(prevMessages => [...prevMessages, serverMsg]);

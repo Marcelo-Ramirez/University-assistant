@@ -1,4 +1,3 @@
-/* App.css */
 html, body {
   margin: 0;
   padding: 0;
@@ -41,12 +40,11 @@ html, body {
 
 .header-content {
   display: flex;
-  justify-content: center; /* Cambia esto a 'center' */
+  justify-content: space-between; /* Ajusta esto para alinear elementos a ambos lados */
   align-items: center;
   width: 100%;
   padding: 5px;
   box-sizing: border-box;
-  position: relative; /* Para posicionar el switch */
 }
 
 .header-title {
@@ -54,13 +52,18 @@ html, body {
   border: solid 2px #d6d3d3;
   border-radius: 10px;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  font-size: 250%; /* Ajusta el tamaño de la fuente del título */
+  font-size: 210%; /* Ajusta el tamaño de la fuente del título */
   margin: 0; /* Elimina márgenes adicionales */
 }
 
+.header-switch-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
 .header-switch {
-  position: absolute;
-  right: 10px;
+  margin-left: auto; /* Asegura que el switch se alinee al lado derecho */
 }
 
 .chat-container {
@@ -87,14 +90,15 @@ html, body {
 .predefined-questions {
   display: flex;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 40px;
 }
 
 .predefined-questions button {
+  font-size: 100%;
   background-color: transparent;
   color: rgb(0, 0, 0);
   border: 1px solid rgb(197, 197, 197);
-  padding: 10px 20px;
+  padding: 20px 30px 20px 20px;
   border-radius: 5px;
   cursor: pointer;
 }
@@ -133,7 +137,7 @@ html, body {
 }
 
 input[type="text"] {
-  padding: 10px;
+  padding: 20px;
   margin-right: 10px;
   flex: 1; /* Permite que el input ocupe todo el espacio disponible */
   margin-bottom: 0; /* Alinear con el button */
