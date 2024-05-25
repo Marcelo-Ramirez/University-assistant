@@ -2,12 +2,11 @@ import React, { useState, useRef, useEffect } from "react";
 import Message from "./Message";
 import chatbot_icon from '../assets/chatbot_icon.png';
 
-function Chat({ isSecondaryInstance }) {
+function Chat() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [showTemporaryDiv, setShowTemporaryDiv] = useState(true); // Estado para el div temporal
-  const [showPredefinedQuestions, setShowPredefinedQuestions] = useState(true); // Estado para las preguntas predefinidas
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -18,15 +17,6 @@ function Chat({ isSecondaryInstance }) {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
-  // Effect to reset the state when isSecondaryInstance changes to true
-  useEffect(() => {
-    if (isSecondaryInstance) {
-      setMessages([]);
-      setShowTemporaryDiv(true);
-      setShowPredefinedQuestions(true);
-    }
-  }, [isSecondaryInstance]);
 
   const handleSend = (message) => {
     if ((message || newMessage.trim()) && !isSending) {
@@ -39,69 +29,47 @@ function Chat({ isSecondaryInstance }) {
       setMessages([...messages, userMsg]);
       setNewMessage("");
       setShowTemporaryDiv(false); // Oculta el div temporal
-      setShowPredefinedQuestions(false); // Oculta las preguntas predefinidas
 
-      if (!isSecondaryInstance) {
-        // Guardar el mensaje en SQLite
-        fetch(`${window.origin}/save`, {
+      // Guardar el mensaje en SQLite
+      fetch(`${window.origin}/save`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: message || newMessage }),
+      })
+      .then(() => {
+        // Consultar al chatbot para obtener una respuesta
+        return fetch(`${window.origin}/get`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ message: message || newMessage }),
-        })
-        .then(() => {
-          const serverMsg = {
-            id: messages.length + 2,
-            text: 'Gracias por contribuir con el entrenamiento de Loyobot',
-            sender: "server",
-          };
-          setMessages(prevMessages => [...prevMessages, serverMsg]);
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-          const serverMsg = {
-            id: messages.length + 2,
-            text: 'Error: No se pudo guardar el mensaje',
-            sender: "server",
-          };
-          setMessages(prevMessages => [...prevMessages, serverMsg]);
-        })
-        .finally(() => {
-          setIsSending(false);
-          inputRef.current?.focus();
         });
-      } else {
-        fetch(`${window.origin}/get`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ message: message || newMessage }),
-        })
-        .then(response => response.json())
-        .then(data => {
-          const serverMsg = {
-            id: messages.length + 2,
-            text: data.response,
-            sender: "server",
-          };
-          setMessages(prevMessages => [...prevMessages, serverMsg]);
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-          const serverMsg = {
-            id: messages.length + 2,
-            text: 'Error: No se pudo obtener respuesta del servidor',
-            sender: "server",
-          };
-          setMessages(prevMessages => [...prevMessages, serverMsg]);
-        })
-        .finally(() => {
-          setIsSending(false);
-          inputRef.current?.focus();
-        });
-      }
+      })
+      .then(response => response.json())
+      .then(data => {
+        const serverMsg = {
+          id: messages.length + 2,
+          text: data.response,
+          sender: "server",
+        };
+        setMessages(prevMessages => [...prevMessages, serverMsg]);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        const serverMsg = {
+          id: messages.length + 2,
+          text: 'Error: No se pudo guardar el mensaje',
+          sender: "server",
+        };
+        setMessages(prevMessages => [...prevMessages, serverMsg]);
+      })
+      .finally(() => {
+        setIsSending(false);
+        inputRef.current?.focus();
+      });
     }
   };
 
@@ -112,7 +80,6 @@ function Chat({ isSecondaryInstance }) {
           <div className="escudo-container">
             <img src={chatbot_icon} alt="chatbot_icon" className="chatbot_icon" />
           </div>
-          {isSecondaryInstance && <p>Este es un mensaje temporal</p>}
         </div>
       )}
       <div className="messages">
@@ -121,10 +88,10 @@ function Chat({ isSecondaryInstance }) {
         ))}
         <div ref={messagesEndRef} />
       </div>
-      {isSecondaryInstance && showPredefinedQuestions && (
+      {showTemporaryDiv && (
         <div className="predefined-questions">
           <button onClick={() => handleSend("¿Cuál es tu nombre?")}>¿Cuál es tu nombre?</button>
-          <button onClick={() => handleSend("¿Cómo estás hoy?")}>¿A cuanto esta la mensualidad?</button>
+          <button onClick={() => handleSend("¿A cuanto esta la mensualidad?")}>¿A cuanto esta la mensualidad?</button>
         </div>
       )}
       <div className="divider">
