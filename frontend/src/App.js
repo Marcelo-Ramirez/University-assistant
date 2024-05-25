@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './App.css';
+import './styles/App.css';
 import Chat from './components/Chat';
 import Switch from 'react-switch'; // Asegúrate de instalar 'react-switch'
 

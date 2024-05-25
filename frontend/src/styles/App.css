@@ -176,7 +176,7 @@ button {
   z-index: 2000; /* Asegura que el div esté por encima del contenido */
 }
 
-.escudo {
+.chatbot_icon {
   width: 100%; /* Ajusta el tamaño del logo */
   height: auto; /* Mantén la proporción del logo */
   opacity: 0.5;

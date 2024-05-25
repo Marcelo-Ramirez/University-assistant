@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import Message from "./Message";
-import escudo from '../logo.png'; // Asegúrate de reemplazar 'path_to_your_image.png' con la ruta real a tu imagen
+import chatbot_icon from '../assets/chatbot_icon.png';
 
 function Chat({ isSecondaryInstance }) {
   const [messages, setMessages] = useState([]);
@@ -110,7 +110,7 @@ function Chat({ isSecondaryInstance }) {
       {showTemporaryDiv && (
         <div className="temporary-div">
           <div className="escudo-container">
-            <img src={escudo} alt="Escudo" className="escudo" />
+            <img src={chatbot_icon} alt="chatbot_icon" className="chatbot_icon" />
           </div>
           {isSecondaryInstance && <p>Este es un mensaje temporal</p>}
         </div>
