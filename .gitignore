@@ -1,5 +1,11 @@
 #React
 frontend/node_modules
 
+#Ngrock
+servidor-ngrok
+
 #Cache python
-backend/__pycache__
+backend/
+
+#documentacion
+documentacion

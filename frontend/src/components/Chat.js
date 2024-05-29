@@ -2,11 +2,11 @@ import React, { useState, useRef, useEffect } from "react";
 import Message from "./Message";
 import chatbot_icon from '../assets/chatbot_icon.png';
 
-function Chat() {
+function Chat({ sendMessage, isMenuOpen }) {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
-  const [showTemporaryDiv, setShowTemporaryDiv] = useState(true); // Estado para el div temporal
+  const [showTemporaryDiv, setShowTemporaryDiv] = useState(true);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -18,58 +18,46 @@ function Chat() {
     scrollToBottom();
   }, [messages]);
 
-  const handleSend = (message) => {
-    if ((message || newMessage.trim()) && !isSending) {
+  const handleSend = () => {
+    if (newMessage.trim() && !isSending) {
       setIsSending(true);
-      const userMsg = {
-        id: messages.length + 1,
-        text: message || newMessage,
-        sender: "user",
-      };
-      setMessages([...messages, userMsg]);
+      if (!isMenuOpen) {
+        const userMsg = {
+          id: messages.length + 1,
+          text: newMessage,
+          sender: "user",
+        };
+        setMessages([...messages, userMsg]);
+      }
       setNewMessage("");
       setShowTemporaryDiv(false); // Oculta el div temporal
 
-      // Guardar el mensaje en SQLite
-      fetch(`${window.origin}/save`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message: message || newMessage }),
-      })
-      .then(() => {
-        // Consultar al chatbot para obtener una respuesta
-        return fetch(`${window.origin}/get`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ message: message || newMessage }),
+      sendMessage(newMessage, isMenuOpen)
+        .then((serverResponse) => {
+          if (!isMenuOpen) {
+            const serverMsg = {
+              id: messages.length + 2,
+              text: serverResponse,
+              sender: "server",
+            };
+            setMessages(prevMessages => [...prevMessages, serverMsg]);
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          if (!isMenuOpen) {
+            const serverMsg = {
+              id: messages.length + 2,
+              text: 'Error: No se pudo obtener respuesta del servidor',
+              sender: "server",
+            };
+            setMessages(prevMessages => [...prevMessages, serverMsg]);
+          }
+        })
+        .finally(() => {
+          setIsSending(false);
+          inputRef.current?.focus();
         });
-      })
-      .then(response => response.json())
-      .then(data => {
-        const serverMsg = {
-          id: messages.length + 2,
-          text: data.response,
-          sender: "server",
-        };
-        setMessages(prevMessages => [...prevMessages, serverMsg]);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        const serverMsg = {
-          id: messages.length + 2,
-          text: 'Error: No se pudo guardar el mensaje',
-          sender: "server",
-        };
-        setMessages(prevMessages => [...prevMessages, serverMsg]);
-      })
-      .finally(() => {
-        setIsSending(false);
-        inputRef.current?.focus();
-      });
     }
   };
 
@@ -109,7 +97,7 @@ function Chat() {
           placeholder={isSending ? "Esperando respuesta..." : "Escribe un mensaje..."}
           disabled={isSending}
         />
-        <button onClick={() => handleSend()} disabled={isSending}>Enviar</button>
+        <button onClick={handleSend} disabled={isSending}>Enviar</button>
       </div>
     </div>
   );

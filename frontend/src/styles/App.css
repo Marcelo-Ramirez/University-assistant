@@ -22,22 +22,6 @@ html, body {
   overflow: hidden; /* Evita el desplazamiento dentro de la aplicación */
 }
 
-.App-header {
-  background-color: #ffffff;
-  color: rgb(0, 0, 0);
-  padding: 5px; /* Reducido al 50% del tamaño original */
-  text-align: center;
-  border-radius: 20%;
-  flex-shrink: 0; /* Previene que el header se encoja */
-  width: 100%;
-  font-size: 0.75rem; /* Ajuste del tamaño de la fuente */
-  box-sizing: border-box; /* Incluye padding y borde en el ancho total */
-  position: fixed; /* Fija el header en la parte superior */
-  top: 0;
-  left: 0;
-  z-index: 1000; /* Asegura que el header esté por encima del contenido */
-}
-
 .header-content {
   display: flex;
   justify-content: space-between; /* Ajusta esto para alinear elementos a ambos lados */
@@ -54,16 +38,6 @@ html, body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 210%; /* Ajusta el tamaño de la fuente del título */
   margin: 0; /* Elimina márgenes adicionales */
-}
-
-.header-switch-container {
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-}
-
-.header-switch {
-  margin-left: auto; /* Asegura que el switch se alinee al lado derecho */
 }
 
 .chat-container {
