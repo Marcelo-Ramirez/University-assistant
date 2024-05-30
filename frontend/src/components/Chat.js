@@ -30,6 +30,12 @@ function Chat({ sendMessage, isMenuOpen }) {
         setMessages([...messages, userMsg]);
       }
       setNewMessage("");
+
+
+
+
+
+
       setShowTemporaryDiv(false); // Oculta el div temporal
 
       sendMessage(newMessage, isMenuOpen)
