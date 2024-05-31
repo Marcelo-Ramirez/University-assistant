@@ -18,7 +18,9 @@ function Chat({ sendMessage, isMenuOpen }) {
     scrollToBottom();
   }, [messages]);
 
-  const handleSend = () => {
+  const handleSend = (messageFast) => {
+
+
     if (newMessage.trim() && !isSending) {
       setIsSending(true);
       if (!isMenuOpen) {
@@ -64,6 +66,42 @@ function Chat({ sendMessage, isMenuOpen }) {
           setIsSending(false);
           inputRef.current?.focus();
         });
+    }else{
+      const userMsg = {
+        id: messages.length + 1,
+        text: messageFast,
+        sender: "user",
+      };
+      setMessages([...messages, userMsg]);
+      setShowTemporaryDiv(false); // Oculta el div temporal
+
+
+
+      sendMessage(messageFast, isMenuOpen)
+      .then((serverResponse) => {
+        if (!isMenuOpen) {
+          const serverMsg = {
+            id: messages.length + 2,
+            text: serverResponse,
+            sender: "server",
+          };
+          setMessages(prevMessages => [...prevMessages, serverMsg]);
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        if (!isMenuOpen) {
+          const serverMsg = {
+            id: messages.length + 2,
+            text: 'Error: No se pudo obtener respuesta del servidor',
+            sender: "server",
+          };
+          setMessages(prevMessages => [...prevMessages, serverMsg]);
+        }
+      })
+      .finally(() => {
+        setIsSending(false);
+      })
     }
   };
 
