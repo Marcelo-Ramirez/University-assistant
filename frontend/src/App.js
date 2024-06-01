@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './styles/App.css';
 import Chat from './components/Chat';
 import Header from './components/Header';
-import SlidingMenu from './components/SlidingMenu';
+import SlidingChat from './components/SlidingChat';
 import RegisterModal from './components/RegisterModal';
 
 function App() {
@@ -58,7 +58,7 @@ function App() {
     <div className="App">
       <Header onMenuClick={handleMenuClick} onRegisterClick={handleRegisterClick} />
       <Chat sendMessage={sendMessage} isMenuOpen={isMenuOpen} />
-      <SlidingMenu isOpen={isMenuOpen} onClose={handleCloseMenu} messages={communityMessages} />
+      <SlidingChat isOpen={isMenuOpen} onClose={handleCloseMenu} messages={communityMessages} />
       <RegisterModal isOpen={isRegisterModalOpen} onClose={handleCloseRegisterModal} />
     </div>
   );

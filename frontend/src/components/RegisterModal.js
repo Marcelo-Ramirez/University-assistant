@@ -1,4 +1,4 @@
-import React from 'react';
+  import React from 'react';
 import '../styles/RegisterModal.css';
 
 const RegisterModal = ({ isOpen, onClose }) => {

@@ -20,27 +20,68 @@ function Chat({ sendMessage, isMenuOpen }) {
 
   const handleSend = (messageFast) => {
 
+    if (newMessage !== "") {
+      if (newMessage.trim() && !isSending) {
+        setIsSending(true);
+        if (!isMenuOpen) {
+          const userMsg = {
+            id: messages.length + 1,
+            text: newMessage,
+            sender: "user",
+          };
+          setMessages([...messages, userMsg]);
+        }
+        setNewMessage("");
 
-    if (newMessage.trim() && !isSending) {
-      setIsSending(true);
-      if (!isMenuOpen) {
-        const userMsg = {
-          id: messages.length + 1,
-          text: newMessage,
-          sender: "user",
-        };
-        setMessages([...messages, userMsg]);
+
+
+
+
+        if (!isMenuOpen) {
+          setShowTemporaryDiv(false); // Oculta el div temporal
+        }
+
+        sendMessage(newMessage, isMenuOpen)
+          .then((serverResponse) => {
+            if (!isMenuOpen) {
+              const serverMsg = {
+                id: messages.length + 2,
+                text: serverResponse,
+                sender: "server",
+              };
+              setMessages(prevMessages => [...prevMessages, serverMsg]);
+            }
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+            if (!isMenuOpen) {
+              const serverMsg = {
+                id: messages.length + 2,
+                text: 'Error: No se pudo obtener respuesta del servidor dfsdfadfsdfassdafdsdfasdfasdfa',
+                sender: "server",
+              };
+              setMessages(prevMessages => [...prevMessages, serverMsg]);
+            }
+          })
+          .finally(() => {
+            setIsSending(false);
+            inputRef.current?.focus();
+          });
       }
-      setNewMessage("");
+    }
+    if (messageFast) {
+      const userMsg = {
+        id: messages.length + 1,
+        text: messageFast,
+        sender: "user",
+      };
+      setMessages([...messages, userMsg]);
+      if (!isMenuOpen) {
+        setShowTemporaryDiv(false); // Oculta el div temporal
+      }
 
 
-
-
-
-
-      setShowTemporaryDiv(false); // Oculta el div temporal
-
-      sendMessage(newMessage, isMenuOpen)
+      sendMessage(messageFast, isMenuOpen)
         .then((serverResponse) => {
           if (!isMenuOpen) {
             const serverMsg = {
@@ -52,7 +93,6 @@ function Chat({ sendMessage, isMenuOpen }) {
           }
         })
         .catch((error) => {
-          console.error('Error:', error);
           if (!isMenuOpen) {
             const serverMsg = {
               id: messages.length + 2,
@@ -64,47 +104,9 @@ function Chat({ sendMessage, isMenuOpen }) {
         })
         .finally(() => {
           setIsSending(false);
-          inputRef.current?.focus();
-        });
-    }else{
-      const userMsg = {
-        id: messages.length + 1,
-        text: messageFast,
-        sender: "user",
-      };
-      setMessages([...messages, userMsg]);
-      setShowTemporaryDiv(false); // Oculta el div temporal
-
-
-
-      sendMessage(messageFast, isMenuOpen)
-      .then((serverResponse) => {
-        if (!isMenuOpen) {
-          const serverMsg = {
-            id: messages.length + 2,
-            text: serverResponse,
-            sender: "server",
-          };
-          setMessages(prevMessages => [...prevMessages, serverMsg]);
-        }
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        if (!isMenuOpen) {
-          const serverMsg = {
-            id: messages.length + 2,
-            text: 'Error: No se pudo obtener respuesta del servidor',
-            sender: "server",
-          };
-          setMessages(prevMessages => [...prevMessages, serverMsg]);
-        }
-      })
-      .finally(() => {
-        setIsSending(false);
-      })
+        })
     }
   };
-
   return (
     <div className="chat-container">
       {showTemporaryDiv && (
@@ -122,7 +124,7 @@ function Chat({ sendMessage, isMenuOpen }) {
       </div>
       {showTemporaryDiv && (
         <div className="predefined-questions">
-          <button onClick={() => handleSend("¿Cuál es tu nombre?")}>¿Cuál es tu nombre?</button>
+          <button onClick={() => handleSend("¿Cuál es tu nombre")}>¿Cuál es tu nombre?</button>
           <button onClick={() => handleSend("¿A cuanto esta la mensualidad?")}>¿A cuanto esta la mensualidad?</button>
         </div>
       )}
@@ -141,7 +143,7 @@ function Chat({ sendMessage, isMenuOpen }) {
           placeholder={isSending ? "Esperando respuesta..." : "Escribe un mensaje..."}
           disabled={isSending}
         />
-        <button onClick={handleSend} disabled={isSending}>Enviar</button>
+        <button onClick={() => handleSend()} disabled={isSending}>Enviar</button>
       </div>
     </div>
   );
