@@ -4,6 +4,7 @@ import Chat from './components/Chat';
 import Header from './components/Header';
 import SlidingChat from './components/SlidingChat';
 import RegisterModal from './components/RegisterModal';
+import sendMessage from './services/api.js'
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,34 +25,6 @@ function App() {
 
   const handleCloseRegisterModal = () => {
     setIsRegisterModalOpen(false);
-  };
-
-  const sendMessage = (message, isGlobal) => {
-    if (isGlobal) {
-      // Actualizar mensajes de la comunidad
-      setCommunityMessages(prevMessages => [...prevMessages, { id: prevMessages.length + 1, text: message, sender: 'user' }]);
-      return Promise.resolve('Mensaje enviado al chat global');
-    } else {
-      return fetch(`${window.origin}/save`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message }),
-      })
-      .then(response => response.json())
-      .then(() => {
-        return fetch(`${window.origin}/get`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ message }),
-        })
-        .then(response => response.json())
-        .then(data => data.response);
-      });
-    }
   };
 
   return (

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Message from "./Message";
 import chatbot_icon from '../assets/chatbot_icon.png';
+import InputBox from "./InputBox";
 
 function Chat({ sendMessage, isMenuOpen }) {
   const [messages, setMessages] = useState([]);
@@ -128,23 +129,7 @@ function Chat({ sendMessage, isMenuOpen }) {
           <button onClick={() => handleSend("¿A cuanto esta la mensualidad?")}>¿A cuanto esta la mensualidad?</button>
         </div>
       )}
-      <div className="divider">
-        <input
-          ref={inputRef}
-          type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              handleSend();
-              e.preventDefault();
-            }
-          }}
-          placeholder={isSending ? "Esperando respuesta..." : "Escribe un mensaje..."}
-          disabled={isSending}
-        />
-        <button onClick={() => handleSend()} disabled={isSending}>Enviar</button>
-      </div>
+      <InputBox CInputRef={inputRef} CNewMessage={newMessage} CSetNewMessage={setNewMessage} CHandleSen={handleSend} CIsSending={isSending}/>
     </div>
   );
 }
