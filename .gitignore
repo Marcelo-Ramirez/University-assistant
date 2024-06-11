@@ -5,7 +5,7 @@ frontend/node_modules
 servidor-ngrok
 
 #Cache python
-backend/
+backend/_pycache_
 
 #documentacion
 documentacion
