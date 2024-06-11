@@ -22,7 +22,7 @@
       },
       {
         "tag": "sucursales",
-        "patterns": ["Cuántas sucursales tiene la universidad?", "Sucursales", "Donde se encuentra", "Sucursal"],
+        "patterns": ["Cuántas sucursales tiene la universidad?", "Sucursales", "Donde se encuentra", "Sucursal", "Donde se encuentra la u"],
         "responses": ["La Universidad Loyola en La Paz, Bolivia, tiene dos edificios principales:\n\nEdificio Principal (Bajo Següencoma): Este edificio, ubicado en la zona sur de La Paz, alberga clases de diferentes carreras.\n\nEdificio El Sauce (Avenida Busch y Jamaica): Este edificio está dedicado exclusivamente a clases de postgrado."]
       },
       {
