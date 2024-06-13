@@ -125,7 +125,7 @@ function Chat({ sendMessage, isMenuOpen }) {
       </div>
       {showTemporaryDiv && (
         <div className="predefined-questions">
-          <button onClick={() => handleSend("¿Cuál es tu nombre")}>¿Cuál es tu nombre?</button>
+          <button onClick={() => handleSend("¿Cuál es tu nombre?")}>¿Cuál es tu nombre?</button>
           <button onClick={() => handleSend("¿A cuanto esta la mensualidad?")}>¿A cuanto esta la mensualidad?</button>
         </div>
       )}
