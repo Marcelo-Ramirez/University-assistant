@@ -19,7 +19,7 @@ model = load_model('chatbot_model.h5')
 def clean_up_sentence(sentence):
     # Tokeniza y lematiza cada palabra en la oración.
     sentence_words = nltk.word_tokenize(sentence)
-    sentence_words = [lemmatizer.lemmatize(word) for word in sentence_words]
+    sentence_words = [lemmatizer.lemmatize(word.lower()) for word in sentence_words]  # Convertimos a minúsculas
     return sentence_words
 
 def bag_of_words(sentence):
