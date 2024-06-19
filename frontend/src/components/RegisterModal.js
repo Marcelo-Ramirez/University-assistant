@@ -4,6 +4,7 @@ import '../styles/RegisterModal.css';
 const RegisterModal = ({ isOpen, onClose }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isLogin, setIsLogin] = useState(false);
 
   if (!isOpen) return null;
 
@@ -24,11 +25,30 @@ const RegisterModal = ({ isOpen, onClose }) => {
     }
   };
 
+  const handleLogin = async () => {
+    const response = await fetch('http://localhost:5000/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      localStorage.setItem('token', data.access_token);
+      alert('User logged in successfully');
+      onClose();
+    } else {
+      alert('Error logging in');
+    }
+  };
+
   return (
     <div className="register-modal">
       <div className="modal-content">
         <button className="close-button" onClick={onClose}>×</button>
-        <h2>Registro</h2>
+        <h2>{isLogin ? 'Iniciar Sesión' : 'Registro'}</h2>
         <input
           type="text"
           placeholder="Nombre de Usuario"
@@ -41,7 +61,12 @@ const RegisterModal = ({ isOpen, onClose }) => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button onClick={handleRegister}>Registrarse</button>
+        <button onClick={isLogin ? handleLogin : handleRegister}>
+          {isLogin ? 'Iniciar Sesión' : 'Registrarse'}
+        </button>
+        <button onClick={() => setIsLogin(!isLogin)}>
+          {isLogin ? '¿No tienes cuenta? Regístrate' : '¿Ya tienes cuenta? Inicia Sesión'}
+        </button>
       </div>
     </div>
   );
