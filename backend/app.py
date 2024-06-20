@@ -1,18 +1,11 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
-from flask_jwt_extended import (
-    JWTManager,
-    create_access_token,
-    jwt_required,
-    get_jwt_identity,
-    decode_token,
-)
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, decode_token
 from flask_socketio import SocketIO, emit
 import sqlite3
 import os
 import chatbot
-from db.messages_db import init_messages_db, MESSAGES_DATABASE
-from db.users_db import init_users_db, USERS_DATABASE
+from db.db import init_db, DATABASE
 
 app = Flask(__name__, static_folder="templates/static")
 CORS(app)
@@ -20,8 +13,8 @@ app.config["JWT_SECRET_KEY"] = "super-secret-key"
 jwt = JWTManager(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
-init_messages_db()
-init_users_db()
+# Inicializar la base de datos
+init_db()
 
 @app.route("/")
 def home():
@@ -36,7 +29,7 @@ def get_bot_response():
 @app.route("/save", methods=["POST"])
 def save_message():
     user_input = request.json["message"]
-    conn = sqlite3.connect(MESSAGES_DATABASE)
+    conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
     c.execute("INSERT INTO messages (message) VALUES (?)", (user_input,))
     conn.commit()
@@ -49,7 +42,7 @@ def register():
     username = data["username"]
     password = data["password"]
 
-    conn = sqlite3.connect(USERS_DATABASE)
+    conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
     c.execute(
         "INSERT INTO Usuarios (password, nombre, correo, carrera) VALUES (?, ?, ?, ?)",
@@ -65,7 +58,7 @@ def login():
     username = data["username"]
     password = data["password"]
 
-    conn = sqlite3.connect(USERS_DATABASE)
+    conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
     c.execute(
         "SELECT * FROM Usuarios WHERE nombre = ? AND password = ?", (username, password)
@@ -80,8 +73,8 @@ def login():
         return jsonify({"msg": "Bad username or password"}), 401
 
 @socketio.on("connect")
-def handle_connect():
-    conn = sqlite3.connect(MESSAGES_DATABASE)
+def handle_connect(auth):
+    conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
     c.execute(
         """
@@ -108,7 +101,7 @@ def handle_send_message(data):
         return
 
     message = data["message"]
-    conn = sqlite3.connect(MESSAGES_DATABASE)
+    conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
     c.execute(
         "INSERT INTO messages (user_id, message) VALUES (?, ?)", (user_id, message)

@@ -2,13 +2,13 @@ import sqlite3
 import os
 
 # Ruta de la base de datos
-USERS_DATABASE = os.path.join(os.getcwd(), 'data', 'users.db')
+DATABASE = os.path.join(os.getcwd(), 'data', 'database.db')
 
-# Inicializa la base de datos de usuarios y demás
-def init_users_db():
-    if not os.path.exists(os.path.dirname(USERS_DATABASE)):
-        os.makedirs(os.path.dirname(USERS_DATABASE))
-    conn = sqlite3.connect(USERS_DATABASE)
+# Inicializa la base de datos de mensajes y usuarios
+def init_db():
+    if not os.path.exists(os.path.dirname(DATABASE)):
+        os.makedirs(os.path.dirname(DATABASE))
+    conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
     c.execute('PRAGMA foreign_keys = ON')
     
@@ -64,5 +64,17 @@ def init_users_db():
     )
     ''')
     
+    c.execute('''
+    CREATE TABLE IF NOT EXISTS messages (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        message TEXT,
+        FOREIGN KEY (user_id) REFERENCES Usuarios(id)
+    )
+    ''')
+    
     conn.commit()
     conn.close()
+
+# Llama a la función de inicialización
+init_db()
