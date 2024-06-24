@@ -132,6 +132,10 @@ button {
   box-sizing: border-box; /* Incluye padding y borde en el ancho total */
 }
 
+.divider.open {
+  background-color: #757575;
+}
+
 /* Estilo para el div temporal */
 .temporary-div {
   display: flex;

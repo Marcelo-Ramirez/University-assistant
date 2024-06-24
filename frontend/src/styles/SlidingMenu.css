@@ -3,13 +3,12 @@
   top: 0;
   left: -100%;
   width: 100%;
-  height: 87%;
+  height: 80%;
   background-color: rgba(243, 243, 243, 0.8); /* Fondo semitransparente */
   backdrop-filter: blur(3px); /* Efecto de desenfoque */
   -webkit-backdrop-filter: blur(10px); /* Compatibilidad con Safari */
   transition: left 0.3s ease;
   z-index: 2000;
-  border-radius:60px;
 }
 
 .sliding-menu.open {
@@ -18,6 +17,9 @@
 
 .menu-content {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .close-button {
@@ -32,7 +34,10 @@
 }
 
 .messages {
+  width: 100%;
+  height: 100%;
   margin-top: 20px;
   overflow-y: auto;
+  flex: 1;
   max-height: calc(100% - 60px); /* Ajusta según el contenido */
 }

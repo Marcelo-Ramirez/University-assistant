@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import io from 'socket.io-client';
 import '../styles/SlidingMenu.css';
 import SCMessage from './SCMessage';
@@ -6,29 +6,31 @@ import SCMessage from './SCMessage';
 const SlidingChat = ({ isOpen, onClose }) => {
   const [messages, setMessages] = useState([]);
   const [socket, setSocket] = useState(null);
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     if (isOpen) {
       const newSocket = io(`${window.origin}`);
       setSocket(newSocket);
 
-      // Escuchar mensajes iniciales
-      newSocket.on('initial_messages', (data) => {
+      // Escuchar preguntas iniciales
+      newSocket.on('initial_preguntas', (data) => {
         setMessages(data.messages);
+        scrollToBottom(); // Desplazarse al final cuando se cargan las preguntas iniciales
       });
 
-      // Escuchar nuevos mensajes
-      newSocket.on('new_message', (message) => {
-        setMessages((prevMessages) => [...prevMessages, message]);
+      // Escuchar nuevas preguntas
+      newSocket.on('new_pregunta', (pregunta) => {
+        setMessages((prevMessages) => [...prevMessages, pregunta]);
+        scrollToBottom(); // Desplazarse al final cuando llega una nueva pregunta
       });
 
       return () => newSocket.close();
     }
   }, [isOpen]);
 
-  const sendMessage = (message) => {
-    const token = localStorage.getItem('token'); // Asegúrate de guardar el token en el login
-    socket.emit('send_message', { message, token });
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -40,13 +42,8 @@ const SlidingChat = ({ isOpen, onClose }) => {
           {messages.map((msg, index) => (
             <SCMessage key={index} text={msg.message} sender={`${msg.username} (${msg.carrera})`} />
           ))}
+          <div ref={messagesEndRef} />
         </div>
-        <input type="text" placeholder="Type a message..." onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            sendMessage(e.target.value);
-            e.target.value = '';
-          }
-        }} />
       </div>
     </div>
   );

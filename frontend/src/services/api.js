@@ -1,7 +1,20 @@
+import io from 'socket.io-client';
+
+const socket = io(`${window.origin}`);
+
 const sendMessage = (message, isGlobal) => {
+    const token = localStorage.getItem('token'); // Asegúrate de guardar el token en el login
+
     if (isGlobal) {
-        // Actualizar mensajes de la comunidad
-        return Promise.resolve('Mensaje enviado al chat global');
+        return new Promise((resolve, reject) => {
+            socket.emit('send_pregunta', { message, token }, (response) => {
+                if (response.error) {
+                    reject(response.error);
+                } else {
+                    resolve('Mensaje enviado al chat global');
+                }
+            });
+        });
     } else {
         return fetch(`${window.origin}/save`, {
             method: 'POST',
@@ -25,4 +38,4 @@ const sendMessage = (message, isGlobal) => {
     }
 };
 
-export default sendMessage
+export default sendMessage;

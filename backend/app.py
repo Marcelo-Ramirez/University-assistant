@@ -31,7 +31,7 @@ def save_message():
     user_input = request.json["message"]
     conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
-    c.execute("INSERT INTO messages (message) VALUES (?)", (user_input,))
+    c.execute("INSERT INTO Messages (message) VALUES (?)", (user_input,))
     conn.commit()
     conn.close()
     return jsonify({"response": "Gracias por el aporte"})
@@ -78,20 +78,20 @@ def handle_connect(auth):
     c = conn.cursor()
     c.execute(
         """
-        SELECT m.message, u.nombre, u.carrera
-        FROM messages m
-        LEFT JOIN Usuarios u ON m.user_id = u.id
+        SELECT p.texto, u.nombre, u.carrera
+        FROM Preguntas p
+        LEFT JOIN Usuarios u ON p.usuario_id = u.id
     """
     )
-    messages = c.fetchall()
+    preguntas = c.fetchall()
     conn.close()
-    formatted_messages = [
-        {"message": msg[0], "username": msg[1], "carrera": msg[2]} for msg in messages
+    formatted_preguntas = [
+        {"message": msg[0], "username": msg[1], "carrera": msg[2]} for msg in preguntas
     ]
-    emit("initial_messages", {"messages": formatted_messages})
+    emit("initial_preguntas", {"messages": formatted_preguntas})
 
-@socketio.on("send_message")
-def handle_send_message(data):
+@socketio.on("send_pregunta")
+def handle_send_pregunta(data):
     token = data["token"]
     try:
         decoded_token = decode_token(token)
@@ -100,30 +100,30 @@ def handle_send_message(data):
         emit("error", {"message": "Invalid token"})
         return
 
-    message = data["message"]
+    pregunta = data["message"]
     conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
     c.execute(
-        "INSERT INTO messages (user_id, message) VALUES (?, ?)", (user_id, message)
+        "INSERT INTO Preguntas (usuario_id, texto) VALUES (?, ?)", (user_id, pregunta)
     )
     conn.commit()
     c.execute(
         """
-        SELECT m.message, u.nombre, u.carrera
-        FROM messages m
-        JOIN Usuarios u ON m.user_id = u.id
-        ORDER BY m.id DESC LIMIT 1
+        SELECT p.texto, u.nombre, u.carrera
+        FROM Preguntas p
+        JOIN Usuarios u ON p.usuario_id = u.id
+        ORDER BY p.id DESC LIMIT 1
     """
     )
-    new_message = c.fetchone()
+    new_pregunta = c.fetchone()
     conn.close()
 
-    formatted_message = {
-        "message": new_message[0],
-        "username": new_message[1],
-        "carrera": new_message[2],
+    formatted_pregunta = {
+        "message": new_pregunta[0],
+        "username": new_pregunta[1],
+        "carrera": new_pregunta[2],
     }
-    emit("new_message", formatted_message, broadcast=True)
+    emit("new_pregunta", formatted_pregunta, broadcast=True)
 
 if __name__ == "__main__":
     socketio.run(app, host="0.0.0.0", port=5000)

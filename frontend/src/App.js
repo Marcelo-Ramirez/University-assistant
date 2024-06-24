@@ -30,7 +30,7 @@ function App() {
     <div className="App">
       <Header onMenuClick={handleMenuClick} onRegisterClick={handleRegisterClick} />
       <Chat sendMessage={sendMessage} isMenuOpen={isMenuOpen} />
-      <SlidingChat isOpen={isMenuOpen} onClose={handleCloseMenu}/>
+      <SlidingChat isOpen={isMenuOpen} onClose={handleCloseMenu} sendMessage={sendMessage}/>
       <RegisterModal isOpen={isRegisterModalOpen} onClose={handleCloseRegisterModal} />
     </div>
   );

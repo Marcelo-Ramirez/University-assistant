@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 
-function InputBox({CInputRef, CNewMessage, CSetNewMessage, CHandleSen, CIsSending}) {
+function InputBox({CInputRef, CNewMessage, CSetNewMessage, CHandleSen, CIsSending, IsOpen}) {
     return (
-        <div className="divider">
+        <div className={`divider ${IsOpen ? 'open' : ''}`}>
             <input
                 ref={CInputRef} //No lo tengo
                 type="text"

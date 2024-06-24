@@ -9,7 +9,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const handleRegister = async () => {
-    const response = await fetch('http://localhost:5000/register', {
+    const response = await fetch(`${window.origin}/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
   };
 
   const handleLogin = async () => {
-    const response = await fetch('http://localhost:5000/login', {
+    const response = await fetch(`${window.origin}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

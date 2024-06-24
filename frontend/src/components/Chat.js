@@ -69,6 +69,7 @@ function Chat({ sendMessage, isMenuOpen }) {
             inputRef.current?.focus();
           });
       }
+      setIsSending(false);
     }
     if (messageFast) {
       const userMsg = {
@@ -129,7 +130,7 @@ function Chat({ sendMessage, isMenuOpen }) {
           <button onClick={() => handleSend("¿A cuanto esta la mensualidad?")}>¿A cuanto esta la mensualidad?</button>
         </div>
       )}
-      <InputBox CInputRef={inputRef} CNewMessage={newMessage} CSetNewMessage={setNewMessage} CHandleSen={handleSend} CIsSending={isSending}/>
+      <InputBox CInputRef={inputRef} CNewMessage={newMessage} CSetNewMessage={setNewMessage} CHandleSen={handleSend} CIsSending={isSending} isOpen={isMenuOpen}/>
     </div>
   );
 }

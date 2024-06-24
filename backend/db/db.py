@@ -65,7 +65,7 @@ def init_db():
     ''')
     
     c.execute('''
-    CREATE TABLE IF NOT EXISTS messages (
+    CREATE TABLE IF NOT EXISTS Messages (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
         message TEXT,
