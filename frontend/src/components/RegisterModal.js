@@ -4,6 +4,7 @@ import '../styles/RegisterModal.css';
 const RegisterModal = ({ isOpen, onClose }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [carrera, setCarrera] = useState('');
   const [isLogin, setIsLogin] = useState(false);
 
   if (!isOpen) return null;
@@ -14,14 +15,14 @@ const RegisterModal = ({ isOpen, onClose }) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ username, password, carrera }),
     });
 
     if (response.ok) {
-      alert('User registered successfully');
+      alert('Usuario registrado correctamente');
       onClose();
     } else {
-      alert('Error registering user');
+      alert('Error al registrar el usuario');
     }
   };
 
@@ -37,10 +38,10 @@ const RegisterModal = ({ isOpen, onClose }) => {
     if (response.ok) {
       const data = await response.json();
       localStorage.setItem('token', data.access_token);
-      alert('User logged in successfully');
+      alert('Logeo exitoso');
       onClose();
     } else {
-      alert('Error logging in');
+      alert('El usuario ya existe o la contraseña es incorrecta');
     }
   };
 
@@ -55,6 +56,14 @@ const RegisterModal = ({ isOpen, onClose }) => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
+        {!isLogin && (
+          <input  
+            type="text"
+            placeholder="Carrera"
+            value={carrera}
+            onChange={(e) => setCarrera(e.target.value)}
+          />
+        )}
         <input
           type="password"
           placeholder="Contraseña"

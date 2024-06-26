@@ -1,14 +1,21 @@
 import React from 'react';
-import chatbot_icon from '../assets/chatbot_icon.png'; // Asegúrate de reemplazar 'path_to_your_image.png' con la ruta real a tu imagen
-import user_icon from '../assets/user_icon.png'; // Asegúrate de reemplazar 'path_to_your_user_icon.png' con la ruta real a tu imagen
+import chatbot_icon from '../assets/chatbot_icon.png';
+import user_icon from '../assets/user_icon.png';
+import '../styles/SCMessage.css';
 
 function SCMessage({ text, sender }) {
     const isUser = sender === 'user';
-    const icon = isUser ? <img src={user_icon} alt="User Icon" className="logochat" /> : <img src={chatbot_icon} alt="Logo" className="logochat" />;
+    const icon = isUser ? <img src={user_icon} alt="User Icon" className="logochat" /> : <img src={chatbot_icon} alt="Chatbot Icon" className="logochat" />;
+    const { username, carrera } = sender;
 
     return (
-        <div className={`message ${sender}`} >
-            <p>{icon} {text}</p>
+        <div className={`message ${isUser ? 'user' : 'chatbot'}`}>
+            <div className="message-header">
+                {icon}
+                <span className="username">{username}</span>
+                <span className="carrera">{carrera}</span>
+            </div>
+            <p className="message-text">{text}</p>
         </div>
     );
 }
