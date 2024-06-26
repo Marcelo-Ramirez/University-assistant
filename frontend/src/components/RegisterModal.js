@@ -7,6 +7,22 @@ const RegisterModal = ({ isOpen, onClose }) => {
   const [carrera, setCarrera] = useState('');
   const [isLogin, setIsLogin] = useState(false);
 
+  const carreras = [
+    'Adm. Empresas',
+    'Ing. Comercial',
+    'Ing. Financiera',
+    'Derecho',
+    'Comunicación',
+    'Ing. Civil',
+    'Ing. Industrial',
+    'Ing. Sistemas',
+    'Ing. Mecánica',
+    'Ing. Electrónica',
+    'Ing. Ambiental',
+    'Gastronomía',
+    'Veterinaria'
+  ];
+
   if (!isOpen) return null;
 
   const handleRegister = async () => {
@@ -57,12 +73,27 @@ const RegisterModal = ({ isOpen, onClose }) => {
           onChange={(e) => setUsername(e.target.value)}
         />
         {!isLogin && (
-          <input  
-            type="text"
-            placeholder="Carrera"
+          <select
             value={carrera}
             onChange={(e) => setCarrera(e.target.value)}
-          />
+            style={{
+              width: '100%',
+              padding: '15px',
+              marginBottom: '15px',
+              border: '1px solid #ccc',
+              borderRadius: '4px',
+              fontSize: '16px',
+              backgroundColor: '#f9f9f9',
+              color: '#333',
+            }}
+          >
+            <option value="" disabled>Selecciona tu carrera</option>
+            {carreras.map((carrera, index) => (
+              <option key={index} value={carrera}>
+                {carrera}
+              </option>
+            ))}
+          </select>
         )}
         <input
           type="password"
