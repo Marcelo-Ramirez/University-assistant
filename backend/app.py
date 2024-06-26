@@ -39,14 +39,18 @@ def save_message():
 @app.route("/register", methods=["POST"])
 def register():
     data = request.get_json()
-    username = data["username"]
-    password = data["password"]
+    username = data.get("username")
+    password = data.get("password")
+    carrera = data.get("carrera")
+
+    if not username or not password or not carrera:
+        return jsonify({"message": "Missing fields"}), 400
 
     conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
     c.execute(
         "INSERT INTO Usuarios (password, nombre, correo, carrera) VALUES (?, ?, ?, ?)",
-        (password, username, username + "@example.com", ""),
+        (password, username, username + "@example.com", carrera),
     )
     conn.commit()
     conn.close()
