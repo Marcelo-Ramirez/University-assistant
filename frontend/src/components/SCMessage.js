@@ -9,13 +9,13 @@ function SCMessage({ text, sender }) {
     const { username, carrera } = sender;
 
     return (
-        <div className={`message ${isUser ? 'user' : 'chatbot'}`}>
-            <div className="message-header">
+        <div className={`sc-message ${isUser ? 'user' : 'chatbot'}`}>
+            <div className="sc-message-header">
                 {icon}
                 <span className="username">{username}</span>
                 <span className="carrera">{carrera}</span>
             </div>
-            <p className="message-text">{text}</p>
+            <p className="sc-message-text">{text}</p>
         </div>
     );
 }
