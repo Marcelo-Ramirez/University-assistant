@@ -9,3 +9,18 @@ backend/_pycache_
 
 #documentacion
 documentacion
+
+#UI compilada
+backend/templates
+
+#Cache python
+**/__pycache__/
+
+#Data base
+backend/data/database.db
+
+#Ngrok
+servidor-ngrok
+
+#virtual env
+backend/venv

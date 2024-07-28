@@ -6,6 +6,15 @@ import nltk
 from nltk.stem import WordNetLemmatizer
 from keras.models import load_model
 
+# Descargar recursos necesarios de NLTK si no están disponibles
+try:
+    nltk.data.find('tokenizers/punkt')
+    nltk.data.find('corpora/wordnet')
+    nltk.data.find('corpora/omw-1.4')
+except LookupError:
+    nltk.download('punkt')
+    nltk.download('wordnet')
+    nltk.download('omw-1.4')
 # Inicializa el lematizador para procesar las palabras.
 lemmatizer = WordNetLemmatizer()
 # Carga el archivo JSON con las intenciones para el chatbot.
