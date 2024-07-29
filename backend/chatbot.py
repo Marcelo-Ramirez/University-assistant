@@ -60,3 +60,18 @@ def get_response(tag):
 def get_chatbot_response(user_input):
     tag = predict_class(user_input)
     return get_response(tag)
+
+def get_chatbot_response(user_input):
+    # Crear el 'bag of words' para la entrada del usuario
+    bow = bag_of_words(user_input)
+    # Obtener las predicciones del modelo
+    res = model.predict(np.array([bow]))[0]
+    # Encontrar el índice de la clase con la mayor probabilidad
+    max_index = np.where(res == np.max(res))[0][0]
+    # Obtener la etiqueta de la intención con la mayor probabilidad
+    tag = classes[max_index]
+    # Obtener el porcentaje de certeza
+    percentage = float(res[max_index]) * 100
+    # Formatear la respuesta con el porcentaje de certeza
+    response = get_response(tag)
+    return f"{response} (Certainty: {percentage:.2f}%)"
