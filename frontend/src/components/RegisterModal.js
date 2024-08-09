@@ -128,14 +128,17 @@ const RegisterModal = ({ isOpen, onClose }) => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button onClick={isLogin ? handleLogin : handleRegister}>
+        <button onClick={isLogin ? handleLogin : handleRegister} 
+          className="p-custom text-black pt-3 pr-4 pb-3 pl-4 rounded hover:bg-blue-600">
           {isLogin ? "Iniciar Sesión" : "Registrarse"}
         </button>
         <button
+        
           onClick={() => {
             setIsLogin(!isLogin);
             clearInputs();
           }}
+          className="p-custom text-black pt-3 pr-4 pb-3 pl-4 rounded hover:bg-blue-600"
         >
           {isLogin
             ? "¿No tienes cuenta? Regístrate"
