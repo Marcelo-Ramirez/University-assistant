@@ -1,0 +1,65 @@
+.App-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+  }
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .header-element {
+    padding: 5px;
+    border: 1px solid #000000;
+    border-radius: 10px;
+    margin: 10px;
+  }
+  
+  .menu-button-container {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    color: #000000;
+    width: 1px; 
+  }
+  
+  .title-container {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .register-button-container {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    padding: 1px;
+    position: right;
+    width: 3px;
+  }
+  
+  .header-title {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 1.5rem;
+    margin: 0;
+  }
+  
+  .menu-button, .register-button {
+    background-color: transparent;
+    border: none;  
+    cursor: pointer;
+    width: 100%;
+    height: auto;
+  }
+  

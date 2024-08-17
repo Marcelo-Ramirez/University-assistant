@@ -1,25 +1,32 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 
-function InputBox({CInputRef, CNewMessage, CSetNewMessage, CHandleSen, CIsSending, IsOpen}) {
+function InputBox({ CInputRef, CNewMessage, CSetNewMessage, CHandleSen, CIsSending, IsOpen }) {
     return (
-        <div className={`divider ${IsOpen ? 'open' : ''}`}>
+        <div className={`flex items-center ${IsOpen ? 'bg-white shadow-md' : ''} p-4`}>
             <input
-                ref={CInputRef} //No lo tengo
+                ref={CInputRef}
                 type="text"
-                value={CNewMessage} //No lo tengo
-                onChange={(e) => CSetNewMessage(e.target.value)} //No lo tengo
+                value={CNewMessage}
+                onChange={(e) => CSetNewMessage(e.target.value)}
                 onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                        CHandleSen(); //No lo tengo
+                        CHandleSen();
                         e.preventDefault(); 
                     }
                 }}
-                placeholder={CIsSending ? "Esperando respuesta..." : "Escribe un mensaje..."} //No lo tengo
-                disabled={CIsSending} //No lo tengo
+                placeholder={CIsSending ? "Esperando respuesta..." : "Escribe un mensaje..."}
+                disabled={CIsSending}
+                className="flex-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300"
             />
-            <button onClick={() => CHandleSen()} disabled={CIsSending}>Enviar</button>
+            <button 
+                onClick={() => CHandleSen()} 
+                disabled={CIsSending}
+                className={`ml-2 px-4 py-2 text-white rounded ${CIsSending ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'}`}
+            >
+                Enviar
+            </button>
         </div>
-    )
+    );
 }
 
 export default InputBox;

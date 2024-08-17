@@ -1,0 +1,44 @@
+.sc-message {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 100%;
+}
+
+.user {
+    align-self: flex-end;
+}
+
+.chatbot {
+    align-self: flex-start;
+    background-color: #e2e0e0;
+    padding: 20px;
+}
+
+.sc-message-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.logochat {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+.username {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.carrera {
+    font-style: italic;
+    color: #555;
+}
+
+.sc-message-text {
+    margin: 0;
+}
