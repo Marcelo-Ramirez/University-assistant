@@ -6,7 +6,7 @@ function Bot() {
 
     return (
         <div className="App">
-            <Chat sendMessage={sendMessage}   isMenuOpen={true}/>
+            <Chat sendMessage={sendMessage} />
         </div>
     );
 }
