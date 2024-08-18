@@ -2,14 +2,24 @@ import React, { useState, useRef, useEffect } from "react";
 import Message from "./Message";
 import chatbot_icon from '../assets/images/chatbot_icon.png';
 import InputBox from "./InputBox";
-
+import { useLocation } from 'react-router-dom'; //para validar segun el directorio en el que se encuentre
 function Chat({ sendMessage, isMenuOpen }) {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
-  const [showTemporaryDiv, setShowTemporaryDiv] = useState(true);
+  const [showTemporaryDiv, setShowTemporaryDiv] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+  const location = useLocation(); // Obtiene la ubicación actual
+
+  useEffect(() => {
+    // Cambia el estado según la ruta actual
+    if (location.pathname === '/bot') {
+      setShowTemporaryDiv(true);
+    } else {
+      setShowTemporaryDiv(false);
+    }
+  }, [location.pathname]); // Dependencia en la ruta actual
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -113,7 +123,7 @@ function Chat({ sendMessage, isMenuOpen }) {
           </div>
         </div>
       )}
-      <div className="flex-1 overflow-y-auto mb-4">
+      <div className="flex-1 bg-yellow-500 overflow-y-auto ">
         {messages.map((msg) => (
           <Message key={msg.id} text={msg.text} sender={msg.sender} />
         ))}

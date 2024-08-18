@@ -2,7 +2,7 @@ import React from "react";
 
 function InputBox({ CInputRef, CNewMessage, CSetNewMessage, CHandleSen, CIsSending, IsOpen }) {
     return (
-        <div className={`flex items-center ${IsOpen ? 'bg-white shadow-md' : ''} p-4`}>
+        <div className={` w-full flex Sticky items-center bg-red-500${IsOpen ? 'bg-white shadow-md' : ''} p-4`}>
             <input
                 ref={CInputRef}
                 type="text"
