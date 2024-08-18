@@ -64,15 +64,12 @@ function SlidingChat() {
   };
 
   return (
-    <div className="sliding-page">
-      <h2>Loyochat</h2>
-      <div className="messages">
+    <div className="flex-1 overflow-y-auto bg-blue-500 ">
         {messages.map((msg, index) => (
           <SCMessage key={index} text={msg.message} sender={msg} />
         ))}
         <div ref={messagesEndRef} />
       </div>
-    </div>
   );
 }
 
