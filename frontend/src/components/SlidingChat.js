@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
 import io from 'socket.io-client';
-import '../styles/SlidingMenu.css';
 import SCMessage from './SCMessage';
 
 function SlidingChat() {

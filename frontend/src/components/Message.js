@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import chatbot_icon from '../assets/images/chatbot_icon.png'; // Asegúrate de reemplazar 'path_to_your_image.png' con la ruta real a tu imagen
-import user_icon from '../assets/images/user_icon.png'; // Asegúrate de reemplazar 'path_to_your_user_icon.png' con la ruta real a tu imagen
+import chatbot_icon from '../assets/images/chatbot_icon.png';
+import user_icon from '../assets/images/user_icon.png';
 
 function* typewriterEffect(text) {
   for (let i = 0; i < text.length; i++) {
@@ -10,7 +10,12 @@ function* typewriterEffect(text) {
 
 function Message({ text, sender }) {
   const isUser = sender === 'user';
-  const icon = isUser ? <img src={user_icon} alt="User Icon" className="logochat" /> : <img src={chatbot_icon} alt="Logo" className="logochat" />;
+  const icon = isUser ? (
+    <img src={user_icon} alt="User Icon" className="w-6 h-6 mr-2" />
+  ) : (
+    <img src={chatbot_icon} alt="Chatbot Icon" className="w-6 h-6 mr-2" />
+  );
+  
   const [serverMessage, setServerMessage] = useState('');
   const messageEndRef = useRef(null);
 
@@ -37,8 +42,13 @@ function Message({ text, sender }) {
   }, [text, isUser]);
 
   return (
-    <div className={`message ${sender}`}>
-      <p>{icon} {isUser ? text : serverMessage}</p>
+    <div className={`flex items-start ${isUser ? 'justify-end' : 'justify-start'} p-2`}>
+      <div className="flex items-center">
+        {icon}
+        <p className={`text-sm ${isUser ? 'text-blue-500' : 'text-gray-700'}`}>
+          {isUser ? text : serverMessage}
+        </p>
+      </div>
       <div ref={messageEndRef} /> {/* Elemento de referencia */}
     </div>
   );
