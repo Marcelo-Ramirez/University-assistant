@@ -29,7 +29,7 @@ const Header = () => {
 
     return (
         <>
-            <header className="bg-gray-800 p-4 w-full fixed ">
+            <header className="bg-gray-800 p-2 w-full fixed ">
                 <div className="flex items-center justify-between max-w-screen-xl mx-auto">
                     <div className="flex items-center">
                         {/* Aquí podrías agregar más contenido si es necesario */}
