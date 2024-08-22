@@ -1,25 +1,35 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
+import { useContext } from "react";
+import BotContext from "../context/BotContext";
 
-function InputBox({CInputRef, CNewMessage, CSetNewMessage, CHandleSen, CIsSending, IsOpen}) {
+
+function InputBox() {
+    const { setInput, input, isSendig, handleSendBot } = useContext(BotContext);
     return (
-        <div className={`divider ${IsOpen ? 'open' : ''}`}>
+        <div className="col-span-12 row-span-2 w-full flex Sticky items-center bg-red-500 p-2">
             <input
-                ref={CInputRef} //No lo tengo
                 type="text"
-                value={CNewMessage} //No lo tengo
-                onChange={(e) => CSetNewMessage(e.target.value)} //No lo tengo
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                        CHandleSen(); //No lo tengo
-                        e.preventDefault(); 
+                        handleSendBot();
+                        e.preventDefault();
                     }
                 }}
-                placeholder={CIsSending ? "Esperando respuesta..." : "Escribe un mensaje..."} //No lo tengo
-                disabled={CIsSending} //No lo tengo
+                placeholder={isSendig ? "Esperando respuesta..." : "Escribe un mensaje..."}
+                disabled={isSendig}
+                className="flex-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300"
             />
-            <button onClick={() => CHandleSen()} disabled={CIsSending}>Enviar</button>
+            <button
+                onClick={() => handleSendBot()}
+                disabled={isSendig}
+                className={`ml-2 px-4 py-2 text-white rounded ${isSendig ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'}`}
+            >
+                Enviar
+            </button>
         </div>
-    )
+    );
 }
 
 export default InputBox;

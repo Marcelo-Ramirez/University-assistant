@@ -1,39 +1,20 @@
-import React, { useState } from 'react';
-import './styles/App.css';
-import Chat from './components/Chat';
-import Header from './components/Header';
-import SlidingChat from './components/SlidingChat';
-import RegisterModal from './components/RegisterModal';
-import sendMessage from './services/api.js'
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Layout from "./Layout";
+import Home from "./pages/Home";
+import Bot from "./pages/Bot";
 
-function App() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
-
-  const handleMenuClick = () => {
-    setIsMenuOpen(true);
-  };
-
-  const handleRegisterClick = () => {
-    setIsRegisterModalOpen(true);
-  };
-
-  const handleCloseMenu = () => {
-    setIsMenuOpen(false);
-  };
-
-  const handleCloseRegisterModal = () => {
-    setIsRegisterModalOpen(false);
-  };
-
-  return (
-    <div className="App">
-      <Header onMenuClick={handleMenuClick} onRegisterClick={handleRegisterClick} />
-      <Chat sendMessage={sendMessage} isMenuOpen={isMenuOpen} />
-      <SlidingChat isOpen={isMenuOpen} onClose={handleCloseMenu} sendMessage={sendMessage}/>
-      <RegisterModal isOpen={isRegisterModalOpen} onClose={handleCloseRegisterModal} />
-    </div>
-  );
+const App = () => {
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<Layout />}>
+                    <Route index element={<Home />} />
+                    <Route path="bot" element={<Bot />} />
+                </Route>
+            </Routes>
+        </Router>
+    );
 }
 
 export default App;
