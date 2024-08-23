@@ -28,8 +28,7 @@ const Header = ({ className }) => {
 
 
     return (
-             <header className={`${className} col-span-12 row-span-1 h-full grid grid-rows-2 bg-gray-800 flex items-center overflow-hidden`}>
-            <div className="flex items-center justify-between max-w-screen-xl mx-auto">
+             <header className={`${className} col-span-12 row-span-1 h-full bg-gray-800 flex items-center overflow-hidden flex items-center `}>
                 <div className="flex items-center">
                     {/* Aquí podrías agregar más contenido si es necesario */}
                 </div>
@@ -41,7 +40,6 @@ const Header = ({ className }) => {
                         <img src={user_icon} alt="User icon" className="h-8 w-8" />
                     </button>
                 </div>
-            </div>
         </header>
     );
 };
