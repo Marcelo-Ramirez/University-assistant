@@ -5,10 +5,10 @@ import NavBar from './components/NavBar';
 
 const Layout = () => {
     return (
-        <div className='grid grid-cols-12 grid-rows-10 min-h-screen w-full overflow-hidden'>
-            <Header className={"col-span-12 row-span-1"} />
-            <Outlet />
-            <NavBar className={"col-span-12 row-span-1"} />
+        <div className='grid grid-cols-12 grid-rows-10 w-full h-full fixed'>
+            <Header className={"col-span-12"} />
+            <Outlet className={"col-span-12"} />
+            <NavBar className={"col-span-12"} />
         </div>
     );
 }

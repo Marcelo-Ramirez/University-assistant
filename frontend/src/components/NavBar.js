@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const NavBar = ({ className }) => {
     return (
         <nav className={`${className} bg-gray-800 text-white`}>
-            <ul className="grid grid-cols-3 gap-4">
+            <ul className="grid grid-cols-3">
                 <li className="text-center">
                     <Link to="/">Home</Link>
                 </li>
