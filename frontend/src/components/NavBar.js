@@ -1,23 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const NavBar = () => {
+const NavBar = ({ className }) => {
     return (
-        <div className="fixed bottom-0 left-0 w-full bg-gray-800 text-white">
-            <nav>
-                <ul className="flex justify-around p-4">
-                    <li>
-                        <Link to="/">Home</Link>
-                    </li>
-                    <li>
-                        <Link to="/Lchat">Chat</Link>
-                    </li>
-                    <li>
-                        <Link to="/bot">Bot</Link>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+        <nav className={`${className} bg-gray-800 text-white`}>
+            <ul className="grid grid-cols-3 gap-4">
+                <li className="text-center">
+                    <Link to="/">Home</Link>
+                </li>
+                <li className="text-center">
+                    <Link to="/Lchat">Chat</Link>
+                </li>
+                <li className="text-center">
+                    <Link to="/bot">Bot</Link>
+                </li>
+            </ul>
+        </nav>
     );
 }
 
