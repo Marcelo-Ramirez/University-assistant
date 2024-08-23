@@ -18,7 +18,7 @@ function ChatBox({className}) {
 
 
     return (
-        <div className= {`${className} overflow-y-auto  h-full  bg-green-500 flex-1`}>
+        <div className= {`${className} overflow-y-auto  h-full flex-1 bg-gray-100`}>
                 {messages.map((msg) => (
                     <Message key={msg.id} text={msg.text} sender={msg.sender} />
                 ))}
