@@ -6,7 +6,7 @@ import BotContext from "../context/BotContext";
 function InputBox({className}) {
     const { setInput, input, isSendig, handleSendBot } = useContext(BotContext);
     return (
-        <div className= {`${className} col-span-12 row-span-2 h-full flex bg-red-500`}>
+        <div className= {`${className} h-full flex bg-red-500`}>
             <input
                 type="text"
                 value={input}

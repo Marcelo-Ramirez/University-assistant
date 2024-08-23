@@ -1,23 +1,24 @@
 import React from "react";
-import user_icon from "../assets/images/user_icon.png";
-import chat_public_icon from "../assets/images/chat_public_icon.png";
+import { Link } from "react-router-dom";
 
-const Header = ({ onMenuClick, onRegisterClick }) => {
+const NavBar = () => {
   return (
-    <header className="bg-gray-800 fixed w-full">
-      <div className="flex items-center justify-between max-w-screen-xl mx-auto">
-       
-        <div className="flex-1 text-center">
-          <h1 className="text-2xl font-bold text-white">Loyobot</h1>
-        </div>
-        <div className="flex items-center">
-          <button className="" onClick={onRegisterClick}>
-            <img src={user_icon} alt="User icon" className="h-8 w-8" />
-          </button>
-        </div>
-      </div>
-    </header>
+    <div className="fixed bottom-0 left-0 w-full bg-gray-800 text-white">
+      <nav>
+        <ul className="flex justify-around w-full h-full">
+        <li className="flex-grow h-full">
+                <Link to="/" className="h-full px-4 py-2 hover:bg-gray-900 hover:text-white flex items-center justify-center">Home</Link>
+            </li>
+            <li className="flex-grow h-full">
+                <Link to="/Lchat" className="h-full px-4 py-2 hover:bg-gray-900 hover:text-white flex items-center justify-center">Chat</Link>
+            </li>
+            <li className="flex-grow h-full">
+                <Link to="/bot" className="h-full px-4 py-2 hover:bg-gray-900 hover:text-white flex items-center justify-center">Bot</Link>
+            </li>
+        </ul>
+      </nav>
+    </div>
   );
 };
 
-export default Header;
+export default NavBar;
