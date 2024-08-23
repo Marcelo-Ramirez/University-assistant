@@ -3,7 +3,7 @@ import Message from "./Message";
 import { useContext } from "react";
 import BotContext from "../context/BotContext";
 
-function ChatBox() {
+function ChatBox({className}) {
     const messagesEndRef = useRef(null);
     const { messages } = useContext(BotContext)
 
@@ -18,14 +18,16 @@ function ChatBox() {
 
 
     return (
-        <div className = "col-span-12 row-span-10 flex flex-col max-h-screen overflow-y-auto p-4 bg-gray-100" >
-            <div className="flex-1 bg-yellow-500 overflow-y-auto ">
+        <div className= {`${className} overflow-y-auto col-span-12 row-span-10 h-full grid grid-rows-12 bg-red-500`}>
+        <div className = "col-span-12 row-span-12 bg-green-500" >
+            <div className="flex-1 bg-yellow-500">
                 {messages.map((msg) => (
                     <Message key={msg.id} text={msg.text} sender={msg.sender} />
                 ))}
                 <div ref={messagesEndRef} />
             </div>
         </div >
+        </div>
 );
 }
 

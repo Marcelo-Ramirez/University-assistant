@@ -28,7 +28,7 @@ const Header = ({ className }) => {
 
 
     return (
-        <header className="col-span-12 row-span-1 bg-gray-800 p-4 overflow-hidden">
+             <header className={`${className} col-span-12 row-span-1 h-full grid grid-rows-2 bg-gray-800 flex items-center overflow-hidden`}>
             <div className="flex items-center justify-between max-w-screen-xl mx-auto">
                 <div className="flex items-center">
                     {/* Aquí podrías agregar más contenido si es necesario */}
@@ -36,7 +36,7 @@ const Header = ({ className }) => {
                 <div className="flex-1 text-center">
                     <h1 className="text-2xl font-bold text-white">{currentTitle}</h1>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-finally">
                     <button className="" onClick={handleRegisterClick}>
                         <img src={user_icon} alt="User icon" className="h-8 w-8" />
                     </button>

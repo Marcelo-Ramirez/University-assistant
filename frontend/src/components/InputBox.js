@@ -3,10 +3,11 @@ import { useContext } from "react";
 import BotContext from "../context/BotContext";
 
 
-function InputBox() {
+function InputBox({className}) {
     const { setInput, input, isSendig, handleSendBot } = useContext(BotContext);
     return (
-        <div className="col-span-12 row-span-2 w-full flex Sticky items-center bg-red-500 p-4 overflow-hidden">
+        <div className= {`${className} col-span-12 row-span-2 h-full grid grid-rows-2 bg-red-500`}>
+        <div className="col-span-12 row-span-2 flex bg-red-500">
             <input
                 type="text"
                 value={input}
@@ -19,7 +20,7 @@ function InputBox() {
                 }}
                 placeholder={isSendig ? "Esperando respuesta..." : "Escribe un mensaje..."}
                 disabled={isSendig}
-                className="flex-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300"
+                className="flex-1 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300"
             />
             <button
                 onClick={() => handleSendBot()}
@@ -28,6 +29,7 @@ function InputBox() {
             >
                 Enviar
             </button>
+        </div>
         </div>
     );
 }
