@@ -115,7 +115,7 @@ function Chat({ sendMessage, isMenuOpen }) {
   };
 
   return (
-    <div className="flex flex-col max-h-screen overflow-y-auto p-4 bg-gray-100">
+    <div className="flex flex-col max-h-screen overflow-y-auto ">
       {showTemporaryDiv && (
         <div className="flex items-center justify-center h-40">
           <div className="flex justify-center items-center h-24 w-24 rounded-full bg-white shadow-lg">

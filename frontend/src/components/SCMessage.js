@@ -10,7 +10,7 @@ function SCMessage({ text, sender }) {
     const { username, carrera } = sender;
 
     return (
-        <div className={`flex flex-col p-4 mb-4 ${isUser ? 'bg-blue-100 text-right' : 'bg-gray-100 text-left'} rounded-lg`}>
+        <div className={`flex flex-col mb-4 ${isUser ? 'bg-blue-100 text-right' : 'bg-gray-100 text-left'} rounded-lg`}>
             <div className="flex items-center mb-2">
                 {icon}
                 <div className="ml-2">

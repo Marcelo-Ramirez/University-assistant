@@ -1,6 +1,5 @@
 import React, { useState} from "react";
 import "../assets/styles/RegisterModal.css";
-
 const RegisterModal = ({ isOpen, onClose }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -129,7 +128,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
           onChange={(e) => setPassword(e.target.value)}
         />
         <button onClick={isLogin ? handleLogin : handleRegister} 
-          className="p-custom text-black pt-3 pr-4 pb-3 pl-4 rounded hover:bg-blue-600">
+          className="text-black  rounded hover:bg-blue-600">
           {isLogin ? "Iniciar Sesión" : "Registrarse"}
         </button>
         <button
@@ -138,7 +137,7 @@ const RegisterModal = ({ isOpen, onClose }) => {
             setIsLogin(!isLogin);
             clearInputs();
           }}
-          className="p-custom text-black pt-3 pr-4 pb-3 pl-4 rounded hover:bg-blue-600"
+          className="text-black rounded hover:bg-blue-600"
         >
           {isLogin
             ? "¿No tienes cuenta? Regístrate"
