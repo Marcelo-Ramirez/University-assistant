@@ -1,6 +1,12 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, decode_token
+from flask_jwt_extended import (
+    JWTManager,
+    create_access_token,
+    jwt_required,
+    get_jwt_identity,
+    decode_token,
+)
 from flask_socketio import SocketIO, emit
 import sqlite3
 import os
@@ -16,15 +22,18 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 # Inicializar la base de datos
 init_db()
 
+
 @app.route("/")
 def home():
     return render_template("index.html")
+
 
 @app.route("/get", methods=["POST"])
 def get_bot_response():
     user_input = request.json["message"]
     response = chatbot.get_chatbot_response(user_input)
     return jsonify({"response": response})
+
 
 @app.route("/save", methods=["POST"])
 def save_message():
@@ -35,6 +44,7 @@ def save_message():
     conn.commit()
     conn.close()
     return jsonify({"response": "Gracias por el aporte"})
+
 
 @app.route("/register", methods=["POST"])
 def register():
@@ -56,6 +66,7 @@ def register():
     conn.close()
     return jsonify({"message": "User registered successfully"}), 201
 
+
 @app.route("/login", methods=["POST"])
 def login():
     data = request.get_json()
@@ -76,6 +87,7 @@ def login():
     else:
         return jsonify({"msg": "Bad username or password"}), 401
 
+
 @socketio.on("connect")
 def handle_connect(auth):
     conn = sqlite3.connect(DATABASE)
@@ -94,6 +106,7 @@ def handle_connect(auth):
     ]
     emit("initial_preguntas", {"messages": formatted_preguntas})
 
+
 @socketio.on("send_pregunta")
 def handle_send_pregunta(data):
     token = data["token"]
@@ -101,8 +114,8 @@ def handle_send_pregunta(data):
         decoded_token = decode_token(token)
         user_id = decoded_token["sub"]
     except:
-        emit("error", {"message": "Invalid token"})
-        return
+        return {"error": "Invalid token"}
+        
 
     pregunta = data["message"]
     conn = sqlite3.connect(DATABASE)
@@ -128,6 +141,10 @@ def handle_send_pregunta(data):
         "carrera": new_pregunta[2],
     }
     emit("new_pregunta", formatted_pregunta, broadcast=True)
+
+    # Enviar confirmación al cliente que emitió la pregunta
+    return {"status": "success", "message": "Pregunta enviada exitosamente"}
+
 
 if __name__ == "__main__":
     socketio.run(app, host="0.0.0.0", port=5000)

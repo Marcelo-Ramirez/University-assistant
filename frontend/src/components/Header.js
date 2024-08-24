@@ -7,6 +7,7 @@ const Header = ({ className }) => {
     const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
 
     const handleRegisterClick = () => {
+        console.log('Register button clicked');
         setIsRegisterModalOpen(true);
     };
 
@@ -18,7 +19,7 @@ const Header = ({ className }) => {
     // Mapea las rutas a los nombres que quieras mostrar
     const pageTitles = {
         "/": "HOME",
-        "/Lchat": "LOYOCHAT",
+        "/chat": "LOYOCHAT",
         "/bot": "LOYOBOT",
         // Agrega más rutas y títulos según sea necesario
     };
@@ -41,6 +42,9 @@ const Header = ({ className }) => {
                         <img src={user_icon} alt="User icon" className="h-8 w-8" />
                     </button>
                 </div>
+                {isRegisterModalOpen && (
+                    <RegisterModal onClose={handleCloseRegisterModal} />
+                )}
             </div>
         </header>
     );

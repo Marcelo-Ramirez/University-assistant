@@ -2,7 +2,7 @@ import React from "react";
 
 const Home = () => {
     return (
-        <div>
+        <div className="col-span-12 row-span-8">
             <h1>Home</h1>
         </div>
     );
