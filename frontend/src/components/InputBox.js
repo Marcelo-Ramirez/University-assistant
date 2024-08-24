@@ -1,14 +1,16 @@
 import React from "react";
 import { useContext } from "react";
 import BotContext from "../context/BotContext";
-
+import { useInputFocus } from "../context/InputFocusContext";
 
 function InputBox({className}) {
     const { setInput, input, isSendig, handleSendBot } = useContext(BotContext);
+    const { inputRef } = useInputFocus(); // Obtén la referencia del input
     return (
         <div className= {`${className} flex items-center justify-center `}>
             <input
                 type="text"
+                ref={(inputRef)}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => {
