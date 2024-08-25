@@ -6,7 +6,7 @@ import BotContext from "../context/BotContext";
 function InputBox() {
     const { setInput, input, isSendig, handleSendBot } = useContext(BotContext);
     return (
-        <div className="col-span-12 row-span-2 w-full flex Sticky items-center bg-red-500 p-4 overflow-hidden">
+        <div className="col-span-12 row-span-2 w-full flex Sticky items-center border-t-2 border-l-2 border-r-2 border-red-500 rounded-t-lg p-4 overflow-hidden">
             <input
                 type="text"
                 value={input}
@@ -19,7 +19,7 @@ function InputBox() {
                 }}
                 placeholder={isSendig ? "Esperando respuesta..." : "Escribe un mensaje..."}
                 disabled={isSendig}
-                className="flex-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300"
+                className="flex-1 p-2 border-[1.5px] border-gray-500 rounded focus:outline-none focus:ring focus:border-blue-300"
             />
             <button
                 onClick={() => handleSendBot()}
