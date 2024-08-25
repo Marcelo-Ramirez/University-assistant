@@ -1,8 +1,8 @@
 import React from "react";
 
-const Home = ({className}) => {
+const Home = ({ className }) => {
     return (
-        <div className="col-span-12 row-span-8">
+        <div className="col-span-12 row-span-10">
             <h1>Home</h1>
         </div>
     );

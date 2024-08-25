@@ -3,15 +3,15 @@ import { ChatGlobalProvider } from '../context/ChatGlobalContext';
 import ChatBox from '../components/ChatBox';
 import InputBox from '../components/InputBox';
 
-function Bot() {
+function Chat() {
     return (
-        <div className=" grid grid-cols-12 grid-rows-12 col-span-12 row-span-8 bg-green-500">
+        <div className="grid grid-cols-12 grid-rows-12 col-span-12 row-span-10">
             <ChatGlobalProvider>
-                <ChatBox />
-                <InputBox />
+                <ChatBox className="col-span-12 row-span-11" />
+                <InputBox className="col-span-12 row-span-1" />
             </ChatGlobalProvider>
         </div>
     );
 }
 
-export default Bot;
+export default Chat;
