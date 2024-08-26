@@ -4,20 +4,19 @@ import { useInputFocus } from "../context/InputFocusContext";
 import ChatGlobalContext from "../context/ChatGlobalContext";
 import { useLocation } from "react-router-dom";
 
-
-
-function InputBox({className}) {
-    const location = useLocation()
-    const context = location.pathname ==="/bot" ? BotContext : ChatGlobalContext
-    const { setInput, input, isSending, handleSend } = useContext(context);
-
+function InputBox({ className }) {
+    const location = useLocation();
+    const contexts = location.pathname === "/bot" ? BotContext : ChatGlobalContext;
+    const { setInput, input, isSending, handleSend } = useContext(contexts);
     const { inputRef } = useInputFocus(); // Obtén la referencia del input
 
     return (
-        <div className= {`${className} flex items-center justify-center `}>
+        <form autoComplete="off"  className={`${className} flex items-center justify-center`}>
             <input
                 type="text"
-                ref={(inputRef)}
+                id="chat-input"  // Asegúrate de que estos sean únicos
+                name="chatInput" // Cambia el nombre si es necesario para evitar
+                ref={inputRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => {
@@ -37,9 +36,8 @@ function InputBox({className}) {
             >
                 Enviar
             </button>
-        </div>
+            </form>
     );
 }
-
 
 export default InputBox;
