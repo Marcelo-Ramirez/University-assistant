@@ -1,8 +1,9 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import BotContext from "../context/BotContext";
 import { useInputFocus } from "../context/InputFocusContext";
 import ChatGlobalContext from "../context/ChatGlobalContext";
 import { useLocation } from "react-router-dom";
+
 
 
 function InputBox({className}) {
@@ -11,8 +12,6 @@ function InputBox({className}) {
     const { setInput, input, isSending, handleSend } = useContext(context);
 
     const { inputRef } = useInputFocus(); // Obtén la referencia del input
-
-   
 
     return (
         <div className= {`${className} flex items-center justify-center `}>
