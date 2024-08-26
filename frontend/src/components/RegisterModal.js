@@ -70,10 +70,13 @@ const RegisterModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" onClick={() => {
+      onClose();
+      clearInputs();
+    }}>
       <div className="bg-white p-8 rounded-lg shadow-lg w-96">
         <button
-          className="text-gray-500 hover:text-gray-700 float-right"
+          className="text-gray-500 hover:text-gray-700 float-right text-2xl"
           onClick={() => {
             onClose();
             clearInputs();
