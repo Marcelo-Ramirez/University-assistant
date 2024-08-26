@@ -5,15 +5,17 @@ import ChatGlobalContext from "../context/ChatGlobalContext";
 import { useLocation } from "react-router-dom";
 
 
+
 function InputBox({className}) {
     const location = useLocation()
     const context = location.pathname == "/bot" ? BotContext : ChatGlobalContext
     const { setInput, input, isSending, handleSend } = useContext(context);
-
+    const { inputRef } = useInputFocus(); // Obtén la referencia del input
     return (
         <div className= {`${className} flex items-center justify-center `}>
             <input
                 type="text"
+                ref={(inputRef)}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => {
