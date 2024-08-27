@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import user_icon from '../assets/images/user_icon.png';
 import RegisterModal from './RegisterModal'; // Asegúrate de que esta importación sea correcta
 import { useLocation } from "react-router-dom";
+import ModalContext from '../context/ModalContext';
 
 const Header = ({ className }) => {
-    const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+    const { isRegisterModalOpen, setIsRegisterModalOpen, isLoged, setIsLoged} = useContext(ModalContext);
 
     const handleRegisterClick = () => {
         console.log('Register button clicked');
+        setIsLoged(false);
         setIsRegisterModalOpen(true);
     };
 
