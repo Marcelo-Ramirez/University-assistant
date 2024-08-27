@@ -1,15 +1,14 @@
 import React from "react";
 
-const Home = () => {
-    
+const CircularRadiusExam = ({startDate, dateExam, fechaActual}) => {
+
     // fecha que se nesesita para hacer el valor del circulo en porcentaje y cambie de color
-    const startDate = "2024-09-16"; 
-    const endDate = "2024-10-30"; // fecha final
-    const fechaActual = "2024-10-16"; // Cambia esta fecha para probar
+    //const startDate = "2024-09-16"; 
+    //const dateExam = "2024-10-30"; // fecha final
 
     // Convertir fechas a objetos Date
     const start = new Date(startDate);
-    const end = new Date(endDate);
+    const end = new Date(dateExam);
     const now = new Date(fechaActual);
 
     // Calcular el porcentaje de progreso basado en las fechas
@@ -89,6 +88,15 @@ const Home = () => {
                     {centerText}
                 </span>
             </div>
+        </div>
+    );
+}
+
+const Home = () => {
+    
+    return (
+        <div className='grid grid-cols-12 grid-rows-12 col-span-12 lg:mx-[15rem] md:mx-20 sm:mx-5 row-span-8'>
+            <CircularRadiusExam startDate={'2024-08-01'} ydateExam={'2024-08-30'} fechaActual={'2024-08-30'}/>        
         </div>
     );
 };
