@@ -10,6 +10,7 @@ const InputFocusContext = createContext();
 const InputFocusProvider = ({ children }) => {
     const [isInputFocused, setIsInputFocused] = useState(false);
     const inputRef = useRef(null);
+    const location = useLocation();
 
     useEffect(() => {
         const handleFocus = () => { 
@@ -31,7 +32,7 @@ const InputFocusProvider = ({ children }) => {
                 inputElement.removeEventListener('blur', handleBlur);
             };
         }
-    }, [currentLocation.pathname]); // Ejecuta el efecto cuando cambia la ruta
+    }, [location.pathname]); // Ejecuta el efecto cuando cambia la ruta
 
     return (
         <InputFocusContext.Provider value={{ isInputFocused, inputRef }}>
