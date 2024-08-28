@@ -13,6 +13,10 @@ import os
 import chatbot
 from db.db import init_db, DATABASE
 
+# Importamos la liberia para la hora del servidor
+from datetime import datetime
+import pytz # Importamos pytz para trabajar con la zona horaria de Bolivia
+
 app = Flask(__name__, static_folder="templates/static")
 CORS(app)
 app.config["JWT_SECRET_KEY"] = "super-secret-key"
@@ -111,27 +115,47 @@ def handle_connect(auth):
 def handle_send_pregunta(data):
     token = data["token"]
     try:
+
         decoded_token = decode_token(token)
         user_id = decoded_token["sub"]
     except:
         return {"error": "Invalid token"}
         
-
+    # esta pregunta es el mensaje que hemos enviado
     pregunta = data["message"]
+
+    # Obtener la fecha y hora actual en la zona horaria de Bolivia
+    bolivia_tz = pytz.timezone('America/La_Paz')
+    fecha_actual = datetime.now(bolivia_tz)
+
+    # Formatear la fecha para que se almacene sin microsegundos y sin zona horaria
+    fecha_actual_str = fecha_actual.strftime('%Y-%m-%d %H:%M:%S')
+    
+    # Conexión a la base de datos y ejecución de la inserción
     conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
     c.execute(
-        "INSERT INTO Preguntas (usuario_id, texto) VALUES (?, ?)", (user_id, pregunta)
+        "INSERT INTO Preguntas (usuario_id, texto, fecha) VALUES (?, ?, ?)", (user_id, pregunta, fecha_actual_str)
     )
+
     conn.commit()
+
     c.execute(
         """
-        SELECT p.texto, u.nombre, u.carrera
+        SELECT p.texto, u.nombre, u.carrera, p.fecha
         FROM Preguntas p
         JOIN Usuarios u ON p.usuario_id = u.id
         ORDER BY p.id DESC LIMIT 1
     """
     )
+    #c.execute(
+        #"""
+        #SELECT p.texto, u.nombre, u.carrera
+        #FROM Preguntas p
+        #JOIN Usuarios u ON p.usuario_id = u.id
+        #ORDER BY p.id DESC LIMIT 1
+    #"""
+    #)
     new_pregunta = c.fetchone()
     conn.close()
 
@@ -139,6 +163,7 @@ def handle_send_pregunta(data):
         "message": new_pregunta[0],
         "username": new_pregunta[1],
         "carrera": new_pregunta[2],
+        "fecha": new_pregunta[3]        
     }
     emit("new_pregunta", formatted_pregunta, broadcast=True)
 

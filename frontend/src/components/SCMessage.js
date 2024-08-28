@@ -6,8 +6,9 @@ function SCMessage({ text, sender }) {
     const isUser = sender === 'user';
     const icon = isUser 
         ? <img src={user_icon} alt="User Icon" className="h-8 w-8 rounded-full" /> 
-        : <img src={chatbot_icon} alt="Chatbot Icon" className="h-8 w-8 rounded-full" />;
-    const { username, carrera } = sender;
+        : <img src={chatbot_icon} alt="Chatbot Icon" className=
+        "h-8 w-8 rounded-full" />;
+    const { username, carrera, fecha } = sender;
 
     return (
         <div className={`flex flex-col mb-4 ${isUser ? 'bg-blue-100 text-right' : 'bg-gray-100 text-left'} rounded-lg`}>
@@ -16,6 +17,7 @@ function SCMessage({ text, sender }) {
                 <div className="ml-2">
                     <span className="block font-semibold text-sm">{username}</span>
                     <span className="block text-xs text-gray-500">{carrera}</span>
+                    <span className="block text-xs text-gray-500">{fecha}</span>
                 </div>
             </div>
             <p className="text-sm">{text}</p>

@@ -45,7 +45,8 @@ function Message({ text, sender }) {
     <div className={`flex items-start ${isUser ? 'justify-end' : 'justify-start'} p-2`}>
       <div className="flex items-center">
         {icon}
-        <p className={`text-sm ${isUser ? 'text-blue-500' : 'text-gray-700'}`}>
+        {/* Aqui se les da estilos a los mensajes, en este caso solo tiene estilos el usario */}
+        <p className={`text-sm ${isUser ? 'mr-2 py-3 px-4 bg-blue-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white max-w-xl' : 'text-gray-700'}`}>
           {isUser ? text : serverMessage}
         </p>
       </div>

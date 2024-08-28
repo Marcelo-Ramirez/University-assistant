@@ -22,13 +22,16 @@ function ChatBox({className}) {
     }, [messages]);
 
     return (
-        <div className= {`${className} overflow-y-auto  h-full flex-1 bg-gray-100`}>
+        <div className= {`${className} col-span-12 row-span-10 flex flex-col max-h-screen border-l-2 border-r-2 border-yellow-500 overflow-y-auto bg-gray-100`}>
+            <div className="flex-1 overflow-y-auto p-3">
                 {location.pathname == "/bot" ? messages.map((msg, index) => (
                     <Message key={index} text={msg.text} sender={msg.sender} />
                 )) : messages.map((msg, index) => (
+                    
                     <SCMessage key={index} text={msg.message} sender={msg} />
                 ))}
                 <div ref={messagesEndRef} />
+                </div>
         </div>
 );
 }
