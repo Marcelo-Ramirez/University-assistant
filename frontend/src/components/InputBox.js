@@ -16,7 +16,7 @@ function InputBox({className}) {
     return (
         <div className= {`${className} flex items-center justify-center `}>
             <input
-                type="text"
+                type="search"
                 ref={(inputRef)}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
