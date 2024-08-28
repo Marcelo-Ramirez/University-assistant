@@ -1,4 +1,5 @@
 // para verificar si un componente fue focus (presionado)
+
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -9,7 +10,6 @@ const InputFocusContext = createContext();
 const InputFocusProvider = ({ children }) => {
     const [isInputFocused, setIsInputFocused] = useState(false);
     const inputRef = useRef(null);
-    const location = useLocation();
 
     useEffect(() => {
         const handleFocus = () => { 
@@ -31,7 +31,7 @@ const InputFocusProvider = ({ children }) => {
                 inputElement.removeEventListener('blur', handleBlur);
             };
         }
-    }, [location.pathname]);
+    }, [currentLocation.pathname]); // Ejecuta el efecto cuando cambia la ruta
 
     return (
         <InputFocusContext.Provider value={{ isInputFocused, inputRef }}>

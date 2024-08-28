@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { createContext } from 'react';
 import io from 'socket.io-client';
+import ModalContext from './ModalContext';
 
 const ChatGlobalContext = createContext();
 
@@ -9,6 +10,7 @@ const ChatGlobalProvider = ({ children }) => {
     const [input, setInput] = useState('');
     const [messages, setMessages] = useState([]);
     const [newSocket, setSocket] = useState(null);
+    const { isRegisterModalOpen, setIsRegisterModalOpen, isLoged, setIsLoged } = useContext(ModalContext);
 
     useEffect(() => {
         console.log('Inicializando conexión WebSocket...');
@@ -67,8 +69,10 @@ const ChatGlobalProvider = ({ children }) => {
         // Emitir el mensaje
         newSocket.emit('send_pregunta', { message: input, token }, (response) => {
             console.log('Emit ejecutado. Esperando respuesta del servidor...');
-
+            setInput("")
             if (response && response.error) {
+                setIsRegisterModalOpen(true);
+                setIsLoged(true);
                 console.error('Error al enviar mensaje al servidor:', response.error);
             } else if (response) {
                 console.log('Mensaje enviado exitosamente al chat global:', response);

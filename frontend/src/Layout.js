@@ -10,7 +10,7 @@ const Layout = () => {
         <div className='grid grid-cols-12 grid-rows-10 w-full h-full fixed'>
             <ProvidersContext>
             <Header className={"col-span-12 row-span-1"} />
-            <Outlet className={"col-span-12 row-span-8"}/>
+            <Outlet />
             <NavBar className={"col-span-12 row-span-1"} />
             </ProvidersContext>
         </div>
