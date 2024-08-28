@@ -148,14 +148,6 @@ def handle_send_pregunta(data):
         ORDER BY p.id DESC LIMIT 1
     """
     )
-    #c.execute(
-        #"""
-        #SELECT p.texto, u.nombre, u.carrera
-        #FROM Preguntas p
-        #JOIN Usuarios u ON p.usuario_id = u.id
-        #ORDER BY p.id DESC LIMIT 1
-    #"""
-    #)
     new_pregunta = c.fetchone()
     conn.close()
 

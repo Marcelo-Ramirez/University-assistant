@@ -5,10 +5,11 @@ import InputBox from '../components/InputBox';
 
 function Chat() {
     return (
-        <div className="grid grid-cols-12 grid-rows-12 col-span-12 row-span-10">
+        // Para la responsividad estamos usando margenes izquierdo y derecho
+        <div className="grid grid-cols-12 grid-rows-10 col-span-12 row-span-10 mx-0 md:mx-[5rem] lg:mx-[12rem]">
             <ChatGlobalProvider>
-                <ChatBox className="col-span-12 row-span-11" />
-                <InputBox className="col-span-12 row-span-1" />
+                <ChatBox className="row-span-10" />
+                <InputBox className="" />
             </ChatGlobalProvider>
         </div>
     );

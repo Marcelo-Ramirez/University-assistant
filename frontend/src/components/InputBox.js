@@ -29,7 +29,7 @@ function InputBox({className}) {
             <button
                 onClick={() => handleSend()}
                 disabled={isSending}
-                className={`text-white px-4 py-2 rounded ${isSending ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'}`}
+                className={`text-white px-4 ml-2 py-2 rounded ${isSending ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'}`}
             >
                 Enviar
             </button>

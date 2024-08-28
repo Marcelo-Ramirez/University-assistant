@@ -86,7 +86,8 @@ const CircularRadiusExam = ({startDate, dateExam, fechaActual}) => {
 const Home = () => {
 
     return (
-        <div className="col-span-12 row-span-10">
+        // Para la responsividad estamos usando margenes izquierdo y derecho
+        <div className="col-span-12 row-span-10 mx-0 md:mx-[5rem] lg:mx-[12rem]">
             <CircularRadiusExam startDate={'2023-05-01'} dateExam={'2024-06-10'} fechaActual={'2024-05-09'}/>        
         </div>
     );
