@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 
-const CircularRadiusExam = ({startDate, dateExam, fechaActual}) => {
+
+
+const CircularRadiusExam = ({ startDate, dateExam, fechaActual }) => {
 
     //const startDate = "2024-09-16"; 
     //const dateExam = "2024-10-30"; // fecha final
@@ -38,11 +40,13 @@ const CircularRadiusExam = ({startDate, dateExam, fechaActual}) => {
     // Determinar el texto del centro
     const centerText =
         daysPastEndDate > 2 ? 'Sin fecha de examen' :
-        percentage >= 100 ? 'Días de examen' :
-        daysRemaining === 1 ? 'Falta 1 día' :
-        `Faltan ${daysRemaining} días`;
+            percentage >= 100 ? 'Días de examen' :
+                daysRemaining === 1 ? 'Falta 1 día' :
+                    `Faltan ${daysRemaining} días`;
     // Determinar el color del progreso
     const progressColor = daysPastEndDate > 2 ? 'text-gray-500 dark:text-neutral-700' : getColor(percentage); // Gris neutro para 'Sin fecha de examen'
+
+
 
     return (
         <div className="relative w-40 h-40">
@@ -85,10 +89,52 @@ const CircularRadiusExam = ({startDate, dateExam, fechaActual}) => {
 
 const Home = () => {
 
+    const [inputValue, setInputValue] = useState('');
+
+    const questions = [
+        '¿Cuáles son los requisitos de admisión?',
+        '¿Cuáles son los costos de matrícula?',
+        '¿Qué becas están disponibles?',
+        '¿Cómo puedo contactar al soporte técnico?',
+    ];
+
+    const handleButtonClick = (question) => {
+        setInputValue(question);
+    };
+
+
     return (
         // Para la responsividad estamos usando margenes izquierdo y derecho
         <div className="col-span-12 row-span-10 mx-0 md:mx-[5rem] lg:mx-[12rem]">
-            <CircularRadiusExam startDate={'2023-05-01'} dateExam={'2024-06-10'} fechaActual={'2024-05-09'}/>        
+            <CircularRadiusExam startDate={'2023-05-01'} dateExam={'2024-06-10'} fechaActual={'2024-05-09'} />
+
+            <div class="container mx-auto">
+
+                <div className="container mx-auto px-8 md:px-0">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-6">
+                        {/* Aqui se renderizan las consultas que vienen del servidor*/}
+                        {questions.map((question, index) => (
+                            <button
+                                key={index}
+                                /* Aqui se dan estilos a las consultas*/
+                                className="bg-white border border-gray-300 rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 flex items-center justify-center p-4 text-center text-gray-900 hover:bg-gray-100 hover:text-blue-600"
+                                onClick={() => handleButtonClick(question)}
+                            >
+                                {question}
+                            </button>
+                        ))}
+                    </div>
+                    <div className="flex flex-col items-center">
+                        <input
+                            type="text"
+                            value={inputValue}
+                            readOnly
+                            className="border border-gray-300 rounded-lg p-4 mb-4 w-full max-w-md text-gray-900"
+                        />
+                    </div>
+                </div>
+            </div>
+
         </div>
     );
 }
