@@ -13,6 +13,8 @@ import os
 import chatbot
 from db.db import init_db, DATABASE
 import datetime
+
+# Para actualizar la fecha y hora del servidor de mensaje
 import pytz
 
 app = Flask(__name__, static_folder="templates/static")
@@ -94,20 +96,56 @@ def login():
 def handle_connect(auth):
     conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
+    # Utilizar el offset inicial desde el cliente o por defecto 0
+    # Recuperar los últimos 10 mensajes ordenados por fecha ascendente
     c.execute(
         """
         SELECT p.texto, u.nombre, u.carrera, p.fecha
         FROM Preguntas p
         LEFT JOIN Usuarios u ON p.usuario_id = u.id
-    """
+        ORDER BY p.ID DESC
+        LIMIT 10
+        """
     )
     preguntas = c.fetchall()
     conn.close()
+
+    # Formatear los mensajes
     formatted_preguntas = [
-        {"message": msg[0], "username": msg[1], "carrera": msg[2],  "fecha": msg[3]} for msg in preguntas
+        {"message": msg[0], "username": msg[1], "carrera": msg[2], "fecha": msg[3]} for msg in preguntas
     ]
+    
+    # Emitir los mensajes iniciales
     emit("initial_preguntas", {"messages": formatted_preguntas})
 
+
+@socketio.on("load_more_preguntas")
+def handle_load_more_preguntas(data):
+    offset = data.get("offset", 0)
+    limit = 10  # Define un límite más razonable para cada solicitud
+
+    conn = sqlite3.connect(DATABASE)
+    c = conn.cursor()
+    c.execute(
+        """
+        SELECT p.texto, u.nombre, u.carrera, p.fecha
+        FROM Preguntas p
+        LEFT JOIN Usuarios u ON p.usuario_id = u.id
+        ORDER BY p.ID DESC
+        LIMIT ? OFFSET ?
+        """, (limit, offset)
+    )
+    preguntas = c.fetchall()
+    conn.close()
+
+    formatted_preguntas = [
+        {"message": msg[0], "username": msg[1], "carrera": msg[2], "fecha": msg[3]} for msg in preguntas
+    ]
+
+    # Verificar si hay más mensajes disponibles
+    has_more = len(preguntas) == limit
+
+    emit("more_preguntas", {"messages": formatted_preguntas, "has_more": has_more})
 
 @socketio.on("send_pregunta")
 def handle_send_pregunta(data):
@@ -134,7 +172,7 @@ def handle_send_pregunta(data):
         SELECT p.texto, u.nombre, u.carrera, p.fecha
         FROM Preguntas p
         JOIN Usuarios u ON p.usuario_id = u.id
-        ORDER BY p.id DESC LIMIT 1
+        ORDER BY p.ID DESC LIMIT 1
     """
     )
     new_pregunta = c.fetchone()
