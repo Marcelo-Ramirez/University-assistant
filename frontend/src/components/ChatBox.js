@@ -26,7 +26,7 @@ function ChatBox({className}) {
                 {location.pathname == "/bot" ? messages.map((msg, index) => (
                     <Message key={index} text={msg.text} sender={msg.sender} />
                 )) : messages.map((msg, index) => (
-                    <SCMessage key={index} text={msg.message} sender={msg} />
+                    <SCMessage key={index} text={msg.message} sender={msg}  fecha={msg.fecha}/>
                 ))}
                 <div ref={messagesEndRef} />
         </div>

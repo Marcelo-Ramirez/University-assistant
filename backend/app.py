@@ -12,6 +12,8 @@ import sqlite3
 import os
 import chatbot
 from db.db import init_db, DATABASE
+import datetime
+import pytz
 
 app = Flask(__name__, static_folder="templates/static")
 CORS(app)
@@ -94,7 +96,7 @@ def handle_connect(auth):
     c = conn.cursor()
     c.execute(
         """
-        SELECT p.texto, u.nombre, u.carrera
+        SELECT p.texto, u.nombre, u.carrera, p.fecha
         FROM Preguntas p
         LEFT JOIN Usuarios u ON p.usuario_id = u.id
     """
@@ -102,7 +104,7 @@ def handle_connect(auth):
     preguntas = c.fetchall()
     conn.close()
     formatted_preguntas = [
-        {"message": msg[0], "username": msg[1], "carrera": msg[2]} for msg in preguntas
+        {"message": msg[0], "username": msg[1], "carrera": msg[2],  "fecha": msg[3]} for msg in preguntas
     ]
     emit("initial_preguntas", {"messages": formatted_preguntas})
 
@@ -118,15 +120,18 @@ def handle_send_pregunta(data):
         
 
     pregunta = data["message"]
+    bolivia_tz = pytz.timezone('America/La_Paz')
+    fecha_actual = datetime.datetime.now(pytz.utc).astimezone(bolivia_tz)
+   
     conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
     c.execute(
-        "INSERT INTO Preguntas (usuario_id, texto) VALUES (?, ?)", (user_id, pregunta)
+        "INSERT INTO Preguntas (usuario_id, texto, fecha ) VALUES (?, ?, ?)", (user_id, pregunta, fecha_actual.strftime("%Y-%m-%d %H:%M:%S"))
     )
     conn.commit()
     c.execute(
         """
-        SELECT p.texto, u.nombre, u.carrera
+        SELECT p.texto, u.nombre, u.carrera, p.fecha
         FROM Preguntas p
         JOIN Usuarios u ON p.usuario_id = u.id
         ORDER BY p.id DESC LIMIT 1
@@ -139,6 +144,7 @@ def handle_send_pregunta(data):
         "message": new_pregunta[0],
         "username": new_pregunta[1],
         "carrera": new_pregunta[2],
+        "fecha": new_pregunta[3],
     }
     emit("new_pregunta", formatted_pregunta, broadcast=True)
 
