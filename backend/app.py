@@ -98,7 +98,7 @@ def handle_connect(auth):
     c = conn.cursor()
     c.execute(
         """
-        SELECT p.texto, u.nombre, u.carrera
+        SELECT p.texto, u.nombre, u.carrera, p.fecha
         FROM Preguntas p
         LEFT JOIN Usuarios u ON p.usuario_id = u.id
     """
@@ -106,7 +106,7 @@ def handle_connect(auth):
     preguntas = c.fetchall()
     conn.close()
     formatted_preguntas = [
-        {"message": msg[0], "username": msg[1], "carrera": msg[2]} for msg in preguntas
+        {"message": msg[0], "username": msg[1], "carrera": msg[2], "fecha": msg[3]} for msg in preguntas
     ]
     emit("initial_preguntas", {"messages": formatted_preguntas})
 
