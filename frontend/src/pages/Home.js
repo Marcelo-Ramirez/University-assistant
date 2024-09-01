@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-
+import React from "react";
 
 
 const CircularRadiusExam = ({ startDate, dateExam, fechaActual }) => {
@@ -89,52 +88,10 @@ const CircularRadiusExam = ({ startDate, dateExam, fechaActual }) => {
 
 const Home = () => {
 
-    const [inputValue, setInputValue] = useState('');
-
-    const questions = [
-        '¿Cuáles son los requisitos de admisión?',
-        '¿Cuáles son los costos de matrícula?',
-        '¿Qué becas están disponibles?',
-        '¿Cómo puedo contactar al soporte técnico?',
-    ];
-
-    const handleButtonClick = (question) => {
-        setInputValue(question);
-    };
-
-
     return (
         // Para la responsividad estamos usando margenes izquierdo y derecho
         <div className="col-span-12 row-span-10 mx-0 md:mx-[5rem] lg:mx-[12rem]">
             <CircularRadiusExam startDate={'2023-05-01'} dateExam={'2024-06-10'} fechaActual={'2024-05-09'} />
-
-            <div class="container mx-auto">
-
-                <div className="container mx-auto px-8 md:px-0">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-6">
-                        {/* Aqui se renderizan las consultas que vienen del servidor*/}
-                        {questions.map((question, index) => (
-                            <button
-                                key={index}
-                                /* Aqui se dan estilos a las consultas*/
-                                className="bg-white border border-gray-300 rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 flex items-center justify-center p-4 text-center text-gray-900 hover:bg-gray-100 hover:text-blue-600"
-                                onClick={() => handleButtonClick(question)}
-                            >
-                                {question}
-                            </button>
-                        ))}
-                    </div>
-                    <div className="flex flex-col items-center">
-                        <input
-                            type="text"
-                            value={inputValue}
-                            readOnly
-                            className="border border-gray-300 rounded-lg p-4 mb-4 w-full max-w-md text-gray-900"
-                        />
-                    </div>
-                </div>
-            </div>
-
         </div>
     );
 }

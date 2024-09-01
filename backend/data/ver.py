@@ -51,8 +51,32 @@ print("Mostrando todos los campos de la tabla 'pregunta':")
 # Realizar la consulta para obtener todos los campos de la tabla 'pregunta'
 cursor.execute("SELECT * FROM preguntas;")
 
+print("Mostrando los los ultimos 5")
+cursor.execute("SELECT * FROM preguntas LIMIT 5;")
+
 # Obtener todos los resultados de la consulta
 preguntas = cursor.fetchall()
+
+
+# Crear un cursor
+#cursor2 = conn.cursor()
+
+# Definir la consulta DELETE
+#delete_query = """
+#DELETE FROM preguntas
+#WHERE id IN (
+#  SELECT id
+#  FROM preguntas
+#  ORDER BY id ASC
+#  LIMIT 1
+#);
+#"""
+# Ejecutar la consulta DELETE
+#cursor2.execute(delete_query)
+
+    # Confirmar los cambios
+#conn.commit()
+
 
 # Obtener los nombres de las columnas de la tabla para imprimirlos
 column_names = [description[0] for description in cursor.description]
