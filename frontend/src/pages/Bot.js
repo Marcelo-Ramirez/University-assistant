@@ -1,17 +1,18 @@
-//import Chat from '../components/Chat';
+import Chat from '../components/Chat';
 import { BotProvider } from '../context/BotContext';
 import ChatBox from '../components/ChatBox';
 import InputBox from '../components/InputBox';
 
 function Bot() {
     return (
-        <BotProvider>
-            {/* con las clases de md:mx-20 estamos realizando la responsividad */}
-            <div className='grid grid-cols-12 grid-rows-12 col-span-12 lg:mx-[15rem] md:mx-20 sm:mx-5 row-span-8'>
+        // Para la responsividad estamos usando margenes izquierdo y derecho
+        <div className="grid grid-cols-12 grid-rows-10 col-span-12 row-span-10 mx-0 md:mx-[5rem] lg:mx-[12rem]">
+            <BotProvider>
                 <ChatBox />
                 <InputBox />
-            </div>
+            
         </BotProvider>
+        </div>
     );
 }
 

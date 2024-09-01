@@ -2,19 +2,18 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from './components/Header';
 import NavBar from './components/NavBar';
+import { ModalProvider } from './context/ModalContext';
+
 
 const Layout = () => {
     return (
-        /*<div className='grid grid-cols-12 grid-rows-10 w-full h-full fixed'>
-                <Header className={"col-span-12"} />
-                <Outlet className={"col-span-12"} />
-                <NavBar className={"col-span-12"} />
-        </div> */ 
-        <div className='grid grid-cols-12 grid-rows-10 w-full h-full fixed'>
-                <Header className={""} />
-                <Outlet className={""} />
-                <NavBar className={""} />                
-        </div>      
+        <div className='grid grid-cols-12 grid-rows-12 w-full h-full fixed'>
+            <ModalProvider>
+                <Header className={"col-span-12 row-span-1"} />
+                <Outlet />
+                <NavBar className={"col-span-12 row-span-1"} />
+            </ModalProvider>
+        </div>
     );
 }
 

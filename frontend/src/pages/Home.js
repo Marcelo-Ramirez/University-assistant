@@ -1,8 +1,8 @@
 import React from "react";
 
-const CircularRadiusExam = ({startDate, dateExam, fechaActual}) => {
 
-    // fecha que se nesesita para hacer el valor del circulo en porcentaje y cambie de color
+const CircularRadiusExam = ({ startDate, dateExam, fechaActual }) => {
+
     //const startDate = "2024-09-16"; 
     //const dateExam = "2024-10-30"; // fecha final
 
@@ -18,17 +18,13 @@ const CircularRadiusExam = ({startDate, dateExam, fechaActual}) => {
         Math.max((currentDuration / totalDuration) * 100, 0),
         100
     ); // Limitar el porcentaje entre 0 y 100
-
     // Calcular el color progresivo entre verde y rojo
     const getColor = (percentage) => {
         if (percentage >= 100) return '#10B981'; // Verde (final)
-
         if (percentage === 0) return '#10B981'; // Verde (inicio)
-
         // Interpolación de color de verde a rojo
         const red = Math.min(255, Math.floor(255 * (percentage / 100)));
         const green = Math.min(255, Math.floor(255 * (1 - percentage / 100)));
-
         return `rgb(${red}, ${green}, 0)`;
     };
 
@@ -37,20 +33,19 @@ const CircularRadiusExam = ({startDate, dateExam, fechaActual}) => {
     const circleCircumference = 2 * Math.PI * circleRadius;
     const strokeDashoffset =
         circleCircumference - (circleCircumference * percentage) / 100;
-
     // Calcular los días pasados desde la fecha final
     const daysPastEndDate = Math.ceil((now - end) / (1000 * 60 * 60 * 24));
     const daysRemaining = Math.max(0, Math.ceil((end - now) / (1000 * 60 * 60 * 24)));
-
     // Determinar el texto del centro
     const centerText =
-        daysPastEndDate > 3 ? 'Sin fecha de examen' :
-        percentage >= 100 ? 'Días de examen' :
-        daysRemaining === 1 ? 'Falta 1 día' :
-        `Faltan ${daysRemaining} días`;
-
+        daysPastEndDate > 2 ? 'Sin fecha de examen' :
+            percentage >= 100 ? 'Días de examen' :
+                daysRemaining === 1 ? 'Falta 1 día' :
+                    `Faltan ${daysRemaining} días`;
     // Determinar el color del progreso
-    const progressColor = daysPastEndDate > 3 ? 'text-gray-500 dark:text-neutral-700' : getColor(percentage); // Gris neutro para 'Sin fecha de examen'
+    const progressColor = daysPastEndDate > 2 ? 'text-gray-500 dark:text-neutral-700' : getColor(percentage); // Gris neutro para 'Sin fecha de examen'
+
+
 
     return (
         <div className="relative w-40 h-40">
@@ -81,13 +76,22 @@ const CircularRadiusExam = ({startDate, dateExam, fechaActual}) => {
                     strokeLinecap="round"
                 />
             </svg>
-
             {/* Texto de días restantes o "Sin fecha de examen" */}
             <div className="absolute top-1/2 left-1/2 text-center transform -translate-y-1/2 -translate-x-1/2">
                 <span className="text-center text-xl font-bold text-blue-600 dark:text-blue-600">
                     {centerText}
                 </span>
             </div>
+        </div>
+    );
+}
+
+const Home = () => {
+
+    return (
+        // Para la responsividad estamos usando margenes izquierdo y derecho
+        <div className="col-span-12 row-span-10 mx-0 md:mx-[5rem] lg:mx-[12rem]">
+            <CircularRadiusExam startDate={'2023-05-01'} dateExam={'2024-06-10'} fechaActual={'2024-05-09'} />
         </div>
     );
 }

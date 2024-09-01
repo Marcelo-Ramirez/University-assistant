@@ -35,5 +35,5 @@ const sendMessageChatGlobal = (message) => {
         });
     });
 }
-
+    
 export { sendMessageBot, sendMessageChatGlobal };
