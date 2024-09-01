@@ -96,13 +96,5 @@ const Home = () => {
     );
 }
 
-const Home = () => {
-    
-    return (
-        <div className='grid grid-cols-12 grid-rows-12 col-span-12 lg:mx-[15rem] md:mx-20 sm:mx-5 row-span-8'>
-            <CircularRadiusExam startDate={'2024-08-01'} ydateExam={'2024-08-30'} fechaActual={'2024-08-30'}/>        
-        </div>
-    );
-};
 
 export default Home;
