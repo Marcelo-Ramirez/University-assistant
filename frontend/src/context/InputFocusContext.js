@@ -17,6 +17,7 @@ const InputFocusProvider = ({ children }) => {
         const handleBlur = () => setIsInputFocused(false);
 
         const inputElement = inputRef.current;
+       // inputRef.current?.focus();   //por si necesitan que se haga focus 
 
         if (inputElement) {
             inputElement.addEventListener('focus', handleFocus);
