@@ -1,116 +1,114 @@
-import React, { useState} from "react";
-import "../styles/RegisterModal.css";
+import React, { useState, useContext } from 'react';
+import ModalContext from '../context/ModalContext';
+import Warning from './Warning';
 
 const RegisterModal = ({ isOpen, onClose }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [carrera, setCarrera] = useState("");
-  const [isLogin, setIsLogin] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [carrera, setCarrera] = useState('');
+  const [isLogin, setIsLogin] = useState(true);
+
+  // Desestructuración del contexto
+  const { isLoged, setIsLoged } = useContext(ModalContext);
 
   const carreras = [
-    "Adm. Empresas",
-    "Ing. Comercial",
-    "Ing. Financiera",
-    "Derecho",
-    "Comunicación",
-    "Ing. Civil",
-    "Ing. Industrial",
-    "Ing. Sistemas",
-    "Ing. Mecánica",
-    "Ing. Electrónica",
-    "Ing. Ambiental",
-    "Gastronomía",
-    "Veterinaria",
+    'Adm. Empresas',
+    'Ing. Comercial',
+    'Ing. Financiera',
+    'Derecho',
+    'Comunicación',
+    'Ing. Civil',
+    'Ing. Industrial',
+    'Ing. Sistemas',
+    'Ing. Mecánica',
+    'Ing. Electrónica',
+    'Ing. Ambiental',
+    'Gastronomía',
+    'Veterinaria',
   ];
- //funcion para limpiar campos
- const clearInputs = () => {
-  setUsername("");
-  setPassword("");
-  setCarrera("");
-};
 
-
-
-  if (!isOpen) return null;
+  const clearInputs = () => {
+    setUsername('');
+    setPassword('');
+    setCarrera('');
+  };
 
   const handleRegister = async () => {
     const response = await fetch(`${window.origin}/register`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ username, password, carrera }),
     });
 
     if (response.ok) {
-      alert("Usuario registrado correctamente");
-      //llimpiado de los campos
+      alert('Usuario registrado correctamente');
       clearInputs();
       onClose();
     } else {
-      alert("Error al registrar el usuario");
-      //limpiado de los campos
+      alert('Error al registrar el usuario');
       clearInputs();
     }
   };
 
   const handleLogin = async () => {
     const response = await fetch(`${window.origin}/login`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ username, password }),
     });
 
     if (response.ok) {
       const data = await response.json();
-      localStorage.setItem("token", data.access_token);
-      alert("Logeo exitoso");
-      //limpiado de los campos
+      localStorage.setItem('token', data.access_token);
+      alert('Logeo exitoso');
       clearInputs();
       onClose();
     } else {
-      alert("El usuario ya existe o la contraseña es incorrecta");
-      //limpiado de los campos
+      alert('El usuario ya existe o la contraseña es incorrecta');
       clearInputs();
     }
   };
 
   return (
-    <div className="register-modal">
-      <div className="modal-content">
-      <button
-          className="close-button"
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      onClick={() => {
+        onClose();
+        clearInputs();
+      }}
+    >
+      <div
+        className="bg-white p-8 rounded-lg shadow-lg w-96"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          className="text-gray-500 hover:text-gray-700 float-right text-2xl"
           onClick={() => {
             onClose();
-            // la función clearInputs aquí para limpiar los campos cuando se cierra el modal
             clearInputs();
           }}
         >
           ×
         </button>
-        <h2>{isLogin ? "Iniciar Sesión" : "Registro"}</h2>
+        <h2 className="text-2xl font-semibold text-center mb-4">
+          {isLogin ? 'Iniciar Sesión' : 'Registro'}
+        </h2>
         <input
           type="text"
           placeholder="Nombre de Usuario"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          className="w-full p-3 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         {!isLogin && (
           <select
             value={carrera}
             onChange={(e) => setCarrera(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "15px",
-              marginBottom: "15px",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-              fontSize: "16px",
-              backgroundColor: "#f9f9f9",
-              color: "#333",
-            }}
+            className="w-full p-3 mb-4 border rounded-md bg-gray-100 text-gray-700"
           >
             <option value="" disabled>
               Selecciona tu carrera
@@ -127,20 +125,28 @@ const RegisterModal = ({ isOpen, onClose }) => {
           placeholder="Codigo Universitario"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          className="w-full p-3 mb-4 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <button onClick={isLogin ? handleLogin : handleRegister}>
-          {isLogin ? "Iniciar Sesión" : "Registrarse"}
+        <button
+          onClick={isLogin ? handleLogin : handleRegister}
+          className="w-full p-3 mb-4 text-white bg-blue-600 rounded-md hover:bg-blue-700"
+        >
+          {isLogin ? 'Iniciar Sesión' : 'Registrarse'}
         </button>
         <button
           onClick={() => {
             setIsLogin(!isLogin);
             clearInputs();
           }}
+          className="w-full p-3 text-blue-600 hover:text-blue-700"
         >
           {isLogin
-            ? "¿No tienes cuenta? Regístrate"
-            : "¿Ya tienes cuenta? Inicia Sesión"}
+            ? '¿No tienes cuenta? Regístrate'
+            : '¿Ya tienes cuenta? Inicia Sesión'}
         </button>
+        {isLoged && (
+          <Warning message="Necesitas estar registrado para usar el chat global" />
+        )}
       </div>
     </div>
   );
