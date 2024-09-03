@@ -42,7 +42,7 @@ const ChatGlobalProvider = ({ children }) => {
 
        
         newSocket.on('new_pregunta', (pregunta) => {
-            console.log('Recibido evento new_pregunta:', pregunta);
+            console.log('Recibido evento new_preguntas:', pregunta);
             setMessages((prevMessages) => [...prevMessages, pregunta]); // Agregar nuevo mensaje al final
             
             // Actualizar el offset para reflejar el nuevo mensaje
