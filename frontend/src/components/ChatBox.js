@@ -1,11 +1,12 @@
-import React, { useRef, useEffect, useContext } from "react";
+//import React, { useRef, useEffect, useContext  } from "react";
+import React, { useRef, useEffect, useContext, useState } from "react";
 import Message from "./Message";
 import BotContext from "../context/BotContext";
 import ChatGlobalContext from "../context/ChatGlobalContext";
 import { useLocation } from "react-router-dom";
 import SCMessage from "./SCMessage"
 
-function ChatBox({className}) {
+function ChatBox({ className }) {
     const messagesEndRef = useRef(null);
     const location = useLocation();
 
@@ -21,6 +22,8 @@ function ChatBox({className}) {
         scrollToBottom();
     }, [messages]);
 
+
+
     return (
         <div className= {`${className} overflow-y-auto  h-full flex-1 bg-gray-100`}>
                 {location.pathname == "/bot" ? messages.map((msg, index) => (
@@ -30,7 +33,7 @@ function ChatBox({className}) {
                 ))}
                 <div ref={messagesEndRef} />
         </div>
-);
+    );
 }
 
 export default ChatBox;

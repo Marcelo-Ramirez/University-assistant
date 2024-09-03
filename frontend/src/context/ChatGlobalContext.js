@@ -39,6 +39,7 @@ const ChatGlobalProvider = ({ children }) => {
             setMessages(data.messages);
         });
 
+        
         // Escuchar nuevas preguntas
         newSocket.on('new_pregunta', (pregunta) => {
             console.log('Recibido evento new_pregunta:', pregunta);
