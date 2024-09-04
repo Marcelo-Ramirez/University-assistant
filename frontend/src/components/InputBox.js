@@ -24,7 +24,7 @@ function InputBox({ className }) {
     return (
         <div className={`${className} flex items-center justify-center`}>
             <input
-                type="text"
+                type="search"
                 id="chat-input"  // Asegúrate de que estos sean únicos
                 name="chatInput" // Cambia el nombre si es necesario para evitar
                 ref={inputRef}
@@ -39,6 +39,7 @@ function InputBox({ className }) {
                 }}
                 placeholder={isSending ? "Esperando respuesta..." : "Escribe un mensaje..."}
                 disabled={isSending}
+                autoComplete="off" // Desactiva las sugerencias del navegado
                 className="flex-1 px-4 py-2 border border-gray-600 rounded focus:outline-none focus:ring focus:border-blue-300"
             />
             <button

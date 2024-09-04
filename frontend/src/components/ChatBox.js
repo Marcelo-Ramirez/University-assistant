@@ -7,76 +7,79 @@ import SCMessage from "./SCMessage";
 
 function ChatBox({ className }) {
     const messagesEndRef = useRef(null);
-    const containerRef = useRef(null); // Referencia al contenedor de mensajes
-    const [showScrollToTop, setShowScrollToTop] = useState(false);
+    const containerRef = useRef(null); 
+    const [loading, setLoading] = useState(false);
+    const [loadingTimeout, setLoadingTimeout] = useState(null);
     const location = useLocation();
 
-    // Uso de un solo hook `useContext` en base a la ruta
+    // Determinar el contexto según la ruta actual
     const context = location.pathname === "/bot" ? BotContext : ChatGlobalContext;
     const { messages, loadMoreMessages } = useContext(context);
 
-    // Función para manejar el scroll y mostrar el botón
+    // Manejar el scroll para cargar más mensajes si estamos en la parte superior
     const handleScroll = () => {
         const container = containerRef.current;
         if (!container) return;
 
-        // Mostrar el botón si estamos en la parte superior
-        const isAtTop = container.scrollTop === 0;
-        setShowScrollToTop(isAtTop);
+        if (container.scrollTop === 0 && !loading) {
+            setLoading(true);
+
+            if (loadingTimeout) {
+                clearTimeout(loadingTimeout);
+            }
+
+            const timeout = setTimeout(() => {
+                handleLoadMoreMessages();
+            }, 1500); // 1.5 segundos para mostrar la animación de carga
+            setLoadingTimeout(timeout);
+        }
     };
 
+    // Desplazar automáticamente hacia abajo al cambiar de ruta
     useEffect(() => {
-        // scroll hacia abajo automatico cuando se cambie de pagina 
         scrollToBottom();
     }, [location.pathname]);
 
-    // Función para hacer scroll hacia abajo
+    // Desplazar hacia abajo
     const scrollToBottom = () => {
         if (messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
         }
     };
 
-    // Función para cargar más mensajes sin cambiar la posición del scroll
+    // Cargar más mensajes y mantener la posición del scroll
     const handleLoadMoreMessages = () => {
         const container = containerRef.current;
         if (!container) return;
 
-        // Guardar la posición actual del scroll y la altura del contenedor
         const previousScrollTop = container.scrollTop;
         const previousScrollHeight = container.scrollHeight;
 
-        // Cargar más mensajes
         loadMoreMessages();
 
-        // Restaurar la posición del scroll después de que el contenedor se actualice
         setTimeout(() => {
             container.scrollTop = previousScrollTop + (container.scrollHeight - previousScrollHeight);
+            setLoading(false);
         }, 120); // Pequeño retraso para permitir que el DOM se actualice
     };
 
     return (
         <div
             ref={containerRef}
-            className={`${className} overflow-y-auto h-full flex-1 bg-gray-100 relative`} // Añadido relative para posicionar el botón
+            className={`${className} overflow-y-auto h-full flex-1 bg-gray-100 relative`}
             onScroll={location.pathname === "/Chat" ? handleScroll : undefined}
         >
-            {location.pathname === "/Chat" && showScrollToTop && (
-                <button
-                    className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white p-2 rounded"
-                    onClick={handleLoadMoreMessages}
-                >
-                    ⬆️
-                </button>
+            {loading && (
+                <div className="absolute top-0 left-0 right-0 bg-white text-center py-2">
+                    Cargando mensajes antiguos...
+                </div>
             )}
 
-            {location.pathname === "/bot"
-                ? messages.map((msg, index) => (
-                    <Message key={index} text={msg.text} sender={msg.sender} />
-                ))
-                : messages.map((msg, index) => (
-                    <SCMessage key={index} text={msg.message} sender={msg} fecha={msg.fecha} />
-                ))}
+            {messages.map((msg, index) =>
+                location.pathname === "/bot"
+                    ? <Message key={index} text={msg.text} sender={msg.sender} />
+                    : <SCMessage key={index} text={msg.message} sender={msg} />
+            )}
             <div ref={messagesEndRef} />
         </div>
     );
