@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { createContext } from 'react';
+import React, { useEffect, useState, useContext, createContext } from 'react';
 import io from 'socket.io-client';
 import ModalContext from './ModalContext';
 
@@ -11,6 +10,7 @@ const ChatGlobalProvider = ({ children }) => {
     const [messages, setMessages] = useState([]);
     const [newSocket, setSocket] = useState(null);
     const { isRegisterModalOpen, setIsRegisterModalOpen, isLoged, setIsLoged } = useContext(ModalContext);
+    const [offset, setOffset] = useState(0);
 
     useEffect(() => {
         console.log('Inicializando conexión WebSocket...');
@@ -36,14 +36,24 @@ const ChatGlobalProvider = ({ children }) => {
         // Escuchar preguntas iniciales
         newSocket.on('initial_preguntas', (data) => {
             console.log('Recibido evento initial_preguntas:', data);
-            setMessages(data.messages);
+            setMessages(data.messages.reverse()); // Mensajes más recientes al final
+            setOffset(data.messages.length); // Establecer offset inicial
         });
 
-        
-        // Escuchar nuevas preguntas
+       
         newSocket.on('new_pregunta', (pregunta) => {
-            console.log('Recibido evento new_pregunta:', pregunta);
-            setMessages((prevMessages) => [...prevMessages, pregunta]);
+            console.log('Recibido evento new_preguntas:', pregunta);
+            setMessages((prevMessages) => [...prevMessages, pregunta]); // Agregar nuevo mensaje al final
+            
+            // Actualizar el offset para reflejar el nuevo mensaje
+            setOffset((prevOffset) => prevOffset + 1);
+        });
+
+        // Escuchar más preguntas
+        newSocket.on('more_preguntas', (data) => {
+            console.log('Recibido evento more_preguntas:', data);
+            setMessages((prevMessages) => [...data.messages.reverse(), ...prevMessages]); // Agregar mensajes antiguos al principio
+            setOffset((prevOffset) => prevOffset + data.messages.length); // Actualizar offset después de agregar los mensajes
         });
 
         // Evento genérico para capturar todos los eventos
@@ -55,7 +65,7 @@ const ChatGlobalProvider = ({ children }) => {
             console.log('Cerrando conexión WebSocket...');
             newSocket.close();
         };
-    }, []);
+    }, []); // Nota: Dependencias vacías, esto se ejecuta solo una vez
 
     const handleSend = () => {
         if (!newSocket || !newSocket.connected) {
@@ -70,7 +80,7 @@ const ChatGlobalProvider = ({ children }) => {
         // Emitir el mensaje
         newSocket.emit('send_pregunta', { message: input, token }, (response) => {
             console.log('Emit ejecutado. Esperando respuesta del servidor...');
-            setInput("")
+            setInput("");
             if (response && response.error) {
                 setIsRegisterModalOpen(true);
                 setIsLoged(true);
@@ -85,9 +95,33 @@ const ChatGlobalProvider = ({ children }) => {
         setIsSending(false);
     };
 
+    // Función para cargar más mensajes antiguos
+    const loadMoreMessages = () => {
+        const newOffset = offset; // No incrementar offset aquí
 
-    const data = { messages, handleSend, input, setInput, isSending };
+        if (!newSocket || !newSocket.connected) {
+            console.error('No se puede cargar más mensajes: la conexión WebSocket no está establecida.');
+            return;
+        }
 
+        newSocket.emit('load_more_preguntas', { offset: newOffset }, (response) => {
+            console.log('cargando antiguos mensajes', response);
+
+            if (response && Array.isArray(response.messages)) {
+                console.log('Mensajes recibidos:', response.messages);
+                if (response.messages.length > 0) {
+                    setMessages((prevMessages) => [...response.messages.reverse(), ...prevMessages]); // Agregar mensajes antiguos al principio
+                    setOffset((prevOffset) => prevOffset + response.messages.length); // Actualizar offset después de agregar los mensajes
+                } else {
+                    console.warn('No se recibieron nuevos mensajes para agregar.');
+                }
+            } else if (response && response.error) {
+                console.error('Error al recibir mensajes antiguos:', response.error);
+            } 
+        });
+    };
+
+    const data = { messages, handleSend, input, setInput, isSending, loadMoreMessages, offset };
     return (
         <ChatGlobalContext.Provider value={data}>
             {children}

@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import ModalContext from '../context/ModalContext';
 
 const Header = ({ className }) => {
-    const { isRegisterModalOpen, setIsRegisterModalOpen, isLoged, setIsLoged} = useContext(ModalContext);
+    const { isRegisterModalOpen, setIsRegisterModalOpen, setIsLoged} = useContext(ModalContext);
 
     const handleRegisterClick = () => {
         console.log('Register button clicked');
@@ -21,13 +21,12 @@ const Header = ({ className }) => {
     // Mapea las rutas a los nombres que quieras mostrar
     const pageTitles = {
         "/": "HOME",
-        "/chat": "LOYOCHAT",
+        "/Chat": "LOYOCHAT",
         "/bot": "LOYOBOT",
-        // Agrega más rutas y títulos según sea necesario
     };
 
     // Obtén el título basado en la ruta actual
-    const currentTitle = pageTitles[location.pathname] || "Loyobot"; // Título por defecto
+    const currentTitle = pageTitles[location.pathname] || "LoyoApp"; // Título por defecto
 
 
     return (
