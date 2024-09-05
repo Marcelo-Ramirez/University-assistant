@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import React, { useContext } from "react";
 import BotContext from "../context/BotContext";
 import { useInputFocus } from "../context/InputFocusContext";
 import ChatGlobalContext from "../context/ChatGlobalContext";
@@ -20,7 +19,7 @@ function InputBox({ className }) {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                        handleSendClick();
+                        handleSend();
                         e.preventDefault();
                     }
                 }}
@@ -29,7 +28,7 @@ function InputBox({ className }) {
                 className="flex-1 px-4 py-2 border border-gray-600 rounded focus:outline-none focus:ring focus:border-blue-300"
             />
             <button
-                onClick={handleSendClick}
+                onClick={handleSend}
                 disabled={isSending}
                 className={`text-white px-4 ml-2 py-2 rounded ${isSending ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'}`}
             >
