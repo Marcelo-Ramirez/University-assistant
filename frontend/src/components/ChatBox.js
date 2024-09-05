@@ -67,7 +67,7 @@ function ChatBox({ className }) {
         <div
             ref={containerRef}
             className={`${className} overflow-y-auto h-full flex-1 bg-gray-100 relative`}
-            onScroll={location.pathname === "/Chat" ? handleScroll : undefined}
+            onScroll={location.pathname === "/chat" ? handleScroll : undefined}
         >
             {loading && (
                 <div className="absolute top-0 left-0 right-0 bg-white text-center py-2">
