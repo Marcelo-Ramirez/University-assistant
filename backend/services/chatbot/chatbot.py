@@ -5,6 +5,7 @@ import numpy as np
 import nltk
 from nltk.stem import WordNetLemmatizer
 from keras.models import load_model
+import os
 
 # Descargar recursos necesarios de NLTK si no están disponibles
 try:
@@ -18,12 +19,16 @@ except LookupError:
 # Inicializa el lematizador para procesar las palabras.
 lemmatizer = WordNetLemmatizer()
 # Carga el archivo JSON con las intenciones para el chatbot.
-intents = json.loads(open('intents.json', encoding='utf-8').read())
+intents = json.loads(open('services/chatbot/intents.json', encoding='utf-8').read())
 # Carga las palabras y clases del modelo desde archivos pickle.
-words = pickle.load(open('words.pkl', 'rb'))
-classes = pickle.load(open('classes.pkl', 'rb'))
+words_path = os.path.join(os.path.dirname(__file__), 'words.pkl')
+words = pickle.load(open(words_path, 'rb'))
+classes_path = os.path.join(os.path.dirname(__file__), 'classes.pkl')
+classes = pickle.load(open(classes_path, 'rb'))
 # Carga el modelo de red neuronal entrenado.
-model = load_model('chatbot_model.h5')
+model_path = os.path.join(os.path.dirname(__file__), 'chatbot_model.h5')
+model = load_model(model_path)
+
 
 def clean_up_sentence(sentence):
     # Tokeniza y lematiza cada palabra en la oración.

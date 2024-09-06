@@ -12,6 +12,8 @@ def init_db():
     c = conn.cursor()
     c.execute('PRAGMA foreign_keys = ON')
     
+    ################################################
+    #### CREACION DE TABLAS DE LA BASE DE DATOS ####
     c.execute('''
     CREATE TABLE IF NOT EXISTS Usuarios (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

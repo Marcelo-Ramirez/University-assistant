@@ -9,7 +9,7 @@ const BotProvider = ({ children }) => {
     const [input, setInput] = useState('');
     const [messages, setMessages] = useState([]);
 
-    const handleSendBot = () => {
+    const handleSend = () => {
         if (input.trim()) {
             const userMsg = {
                 id: messages.length + 1,
@@ -41,7 +41,7 @@ const BotProvider = ({ children }) => {
             });
     };
 
-    const data = { messages, isSending, handleSendBot, setInput, input };
+    const data = { messages, isSending, handleSend: handleSend, setInput, input };
 
     return (
         <BotContext.Provider value={data}>

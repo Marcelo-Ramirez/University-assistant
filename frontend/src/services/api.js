@@ -1,5 +1,3 @@
-import io from 'socket.io-client';
-
 const sendMessageBot = (message) => {
     return fetch(`${window.origin}/save`, {
         method: 'POST',
@@ -22,18 +20,4 @@ const sendMessageBot = (message) => {
         });
 };
 
-const sendMessageChatGlobal = (message) => {
-    const socket = io(`${window.origin}`);
-    const token = localStorage.getItem('token'); // Asegúrate de guardar el token en el login
-    return new Promise((resolve, reject) => {
-        socket.emit('send_pregunta', { message, token }, (response) => {
-            if (response.error) {
-                reject(response.error);
-            } else {
-                resolve('Mensaje enviado al chat global');
-            }
-        });
-    });
-}
-
-export { sendMessageBot, sendMessageChatGlobal };
+export { sendMessageBot };
