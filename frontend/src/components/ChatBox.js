@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useContext, useState } from "react";
-import Message from "./Message";
-import SCMessage from "./SCMessage";
+import MessageBot from "./MessageBot";
+import SCMessage from "./MessageChatGlobal";
 import BotContext from "../context/BotContext";
 import ChatGlobalContext from "../context/ChatGlobalContext";
 import { useLocation } from "react-router-dom";
@@ -77,7 +77,7 @@ function ChatBox({ className }) {
 
             {messages.map((msg, index) =>
                 location.pathname === "/bot"
-                    ? <Message key={index} text={msg.text} sender={msg.sender} />
+                    ? <MessageBot key={index} text={msg.text} sender={msg.sender} />
                     : <SCMessage key={index} text={msg.message} sender={msg} />
             )}
             <div ref={messagesEndRef} />

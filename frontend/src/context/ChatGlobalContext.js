@@ -9,7 +9,7 @@ const ChatGlobalProvider = ({ children }) => {
     const [input, setInput] = useState('');
     const [messages, setMessages] = useState([]);
     const [newSocket, setSocket] = useState(null);
-    const { isRegisterModalOpen, setIsRegisterModalOpen, isLoged, setIsLoged } = useContext(ModalContext);
+    const { setIsRegisterModalOpen, setIsLoged } = useContext(ModalContext);
     const [offset, setOffset] = useState(0);
 
     useEffect(() => {

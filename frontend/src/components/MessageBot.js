@@ -8,7 +8,7 @@ function* typewriterEffect(text) {
   }
 }
 
-function Message({ text, sender }) {
+function MessageBot({ text, sender }) {
   const isUser = sender === 'user';
   const icon = isUser ? (
     <img src={user_icon} alt="User Icon" className="w-6 h-6 mr-2" />
@@ -55,4 +55,4 @@ function Message({ text, sender }) {
   );
 }
 
-export default Message;
+export default MessageBot;
