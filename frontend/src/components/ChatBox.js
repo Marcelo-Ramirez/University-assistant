@@ -40,7 +40,7 @@ function ChatBox({ className }) {
         scrollToBottom();
     }, [location.pathname]);
 
-    // Desplazar automáticamente hacia abajo al cambiar de ruta
+    // Desplazar automáticamente hacia abajo al enviar mensaje
     useEffect(() => {
         scrollToBottom();
     }, [messages]);

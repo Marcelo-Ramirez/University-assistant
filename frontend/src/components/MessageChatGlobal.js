@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import chatbot_icon from '../assets/images/chatbot_icon.png';
 import user_icon from '../assets/images/user_icon.png';
+import { useLocation } from "react-router-dom"; // Importar useLocation
 
 function SCMessage({ text, sender }) {
     const isUser = sender === 'user';
@@ -12,6 +13,9 @@ function SCMessage({ text, sender }) {
 
     // PARA OBTENER LA HORA EN QUE SE ENVIO EL MENSAJE
     const fechaActual = new Date();
+    const fechaActualUTC = fechaActual.toUTCString(); // Fecha en formato UTC
+console.log(fechaActualUTC); // Ejemplo: "Fri, 06 Sep 2024 14:35:40 GMT"
+
     const fechaComentario = fecha;
 
     // Convertir la fecha del comentario a un objeto Date
@@ -48,6 +52,12 @@ function SCMessage({ text, sender }) {
         }
     }
     //// FIN DE LA FUNCION
+  // Hook para detectar cambios de ruta y obtener la hora actual
+  const location = useLocation();
+  useEffect(() => {
+      const currentTime = new Date().toLocaleTimeString();
+      console.log(`La ruta ha cambiado. Hora actual: ${currentTime}`);
+  }, [location]); // Se ejecuta cada vez que cambia la ruta
 
 
     return (

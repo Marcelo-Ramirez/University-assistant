@@ -21,24 +21,26 @@ function InputBox({ className }) {
            setShouldFocus(false); // Resetea el estado para evitar enfoque no deseado
        }
    }, [shouldFocus, isSending, inputRef]);
+    // Nueva función para manejar el envío
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+            handleSend();
+            e.preventDefault(); // Previene el salto de línea en "Enter" sin Shift
+            setShouldFocus(true);
+        }
+    };
     return (
-        <div className={`${className} flex items-center justify-center`}>
-            <input
-                type="search"
+        <form className={`${className} flex items-center justify-center`}>
+           <textarea
                 ref={(inputRef)}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                        handleSend();
-                        e.preventDefault();
-                        setShouldFocus(true);
-                    }
-                }}
+                onKeyDown={handleKeyDown} // Mantén la lógica de envío
+                autoComplete="off"
                 placeholder={isSending ? "Esperando respuesta..." : "Escribe un mensaje..."}
                 disabled={isSending}
-                autoComplete="off" // Desactiva las sugerencias del navegado
-                className="flex-1 px-4 py-2 border border-gray-600 rounded focus:outline-none focus:ring focus:border-blue-300"
+                rows={1} // Ajusta el número de filas para el textarea
+                className="flex-1 px-4 py-2 border border-gray-600 rounded focus:outline-none focus:ring focus:border-blue-300 resize-none" // Añadí `resize-none` para evitar el cambio de tamaño del textarea
             />
             <button
                 onClick={() => {
@@ -50,7 +52,7 @@ function InputBox({ className }) {
             >
                 Enviar
             </button>
-            </div>
+            </form>
     );
 }
 
