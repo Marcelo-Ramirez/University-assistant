@@ -6,6 +6,14 @@ from models.data_base import DATABASE
 
 routes_bp = Blueprint('routes_bp', __name__)
 
+# Middleware para procesar rutas desconocidas
+@routes_bp.before_app_request
+def check_route():
+    known_routes = ["/", "/get", "/save", "/register", "/login"]
+    if request.path not in known_routes and 'static' not in request.path:
+        return render_template("index.html")
+
+# Rutas definidas
 @routes_bp.route("/")
 def home():
     return render_template("index.html")
