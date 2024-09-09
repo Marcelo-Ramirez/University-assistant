@@ -40,6 +40,11 @@ function ChatBox({ className }) {
         scrollToBottom();
     }, [location.pathname]);
 
+    // Desplazar automáticamente hacia abajo al enviar mensaje
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
+
     // Desplazar hacia abajo
     const scrollToBottom = () => {
         if (messagesEndRef.current) {
