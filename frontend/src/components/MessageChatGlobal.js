@@ -13,9 +13,7 @@ function SCMessage({ text, sender }) {
 
     // PARA OBTENER LA HORA EN QUE SE ENVIO EL MENSAJE
     const fechaActual = new Date();
-    const fechaActualUTC = fechaActual.toUTCString(); // Fecha en formato UTC
-console.log(fechaActualUTC); // Ejemplo: "Fri, 06 Sep 2024 14:35:40 GMT"
-
+    
     const fechaComentario = fecha;
 
     // Convertir la fecha del comentario a un objeto Date
