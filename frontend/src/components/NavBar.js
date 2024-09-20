@@ -9,9 +9,9 @@ const NavBar = ({ className }) => {
 
     return (
         <nav className={`${className} ${deviceType === 'Mobile' && isInputFocused ? 'hidden' : ''} bg-gray-800 text-white`}>
-            <ul className="grid grid-cols-3 ">
-                <li className="">
-                    <Link to="/" className="inline-flex flex-col items-center justify-center px-16 hover:bg-gray-50 dark:hover:bg-gray-800 group">
+            <ul className="grid grid-cols-3 gap-4 sm:gap-0">
+                <li className="flex justify-center items-center">
+                    <Link to="/" className="inline-flex flex-col items-center justify-center px-8 py-2 hover:bg-gray-50 dark:hover:bg-gray-800 group">
                         {/* Lo pongo ahi el link para que el svg y el texto sea un link */}
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="-2 0 24 24" strokeWidth={1.5} stroke="currentColor"
                             className="h-7 w-7 text-gray-500 dark:text-gray-50 group-hover:text-blue-600 dark:group-hover:text-blue-500">
@@ -24,8 +24,8 @@ const NavBar = ({ className }) => {
                         </span>
                     </Link>
                 </li>
-                <li className="">
-                    <Link to="/chat" className="inline-flex flex-col items-center justify-center px-16 hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                <li className="flex justify-center items-center">
+                    <Link to="/chat" className="inline-flex flex-col items-center justify-center px-8 py-2 hover:bg-gray-50 dark:hover:bg-gray-800 group">
                         {/* Lo pongo ahi el link para que el svg y el texto sea un link */}
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-gray-500 dark:text-gray-50 group-hover:text-blue-600 dark:group-hover:text-blue-500" viewBox="0 0 24 24">
                             <path fill="currentColor" d="M4 4h16v12H5.17L4 17.17zm0-2c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm2 10h8v2H6zm0-3h12v2H6zm0-3h12v2H6z" />
@@ -35,8 +35,8 @@ const NavBar = ({ className }) => {
                         </span>
                     </Link>
                 </li>
-                <li className="">
-                    <Link to="/bot" className="inline-flex flex-col items-center justify-center px-16 hover:bg-gray-50 dark:hover:bg-gray-800 group">
+                <li className="flex justify-center items-center">
+                    <Link to="/bot" className="inline-flex flex-col items-center justify-center px-8 py-2 hover:bg-gray-50 dark:hover:bg-gray-800 group">
                         <svg class="w-7 h-7 text-gray-500 dark:text-gray-50 group-hover:text-blue-600 dark:group-hover:text-blue-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.3" color="currentColor">
                                 <path d="M4 15.5a2 2 0 1 1 0-4m16 4a2 2 0 1 0 0-4M7 7V4m10 3V4" />
