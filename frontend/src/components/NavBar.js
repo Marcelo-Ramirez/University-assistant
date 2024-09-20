@@ -6,6 +6,9 @@ import { useInputFocus } from '../context/InputFocusContext';
 const NavBar = ({ className }) => {
     const { deviceType } = useDevice();
     const { isInputFocused } = useInputFocus();
+
+    //INICIO DEL METODO //////////////////////////////////////
+    //Desde Aqui es la funcion para cambiar los colores al seleccionar los links
     const location = useLocation(); // Obtiene la ubicación actual
 
     const [activeLink, setActiveLink] = useState(location.pathname); // Inicializa con la ruta actual
@@ -18,6 +21,7 @@ const NavBar = ({ className }) => {
     useEffect(() => {
         setActiveLink(location.pathname);
     }, [location.pathname]);
+    //FIN DEL METODO///////////////////////////////////////
 
     return (
         <nav className={`${className} ${deviceType === 'Mobile' && isInputFocused ? 'hidden' : ''} bg-gray-800 text-white`}>
