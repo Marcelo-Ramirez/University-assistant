@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import ModalContext from '../context/ModalContext';
 
 const Header = ({ className }) => {
-    const { isRegisterModalOpen, setIsRegisterModalOpen, setIsLoged} = useContext(ModalContext);
+    const { isRegisterModalOpen, setIsRegisterModalOpen, setIsLoged } = useContext(ModalContext);
 
     const handleRegisterClick = () => {
         console.log('Register button clicked');
@@ -30,18 +30,23 @@ const Header = ({ className }) => {
 
 
     return (
-        <header className={`${className} h-full bg-gray-800 overflow-hidden flex items-center `}>
-            <div className="flex items-center">
-                {/* Aquí podrías agregar más contenido si es necesario */}
+        <header className={`${className} h-full bg-gray-800 overflow-hidden flex items-center justify-center relative`}>
+            <div className="absolute left-4">
+                {/* Si tienes algún contenido adicional en la parte izquierda */}
             </div>
-            <div className="flex-1 text-center">
+
+            {/* Título siempre centrado */}
+            <div className="text-center">
                 <h1 className="text-2xl font-bold text-white">{currentTitle}</h1>
             </div>
-            <div className="flex items-finally">
-                <button className="" onClick={handleRegisterClick}>
+
+            {/* Ícono de usuario posicionado al final con margen derecho */}
+            <div className="absolute right-4">
+                <button onClick={handleRegisterClick}>
                     <img src={user_icon} alt="User icon" className="h-8 w-8" />
                 </button>
             </div>
+
             {isRegisterModalOpen && (
                 <RegisterModal onClose={handleCloseRegisterModal} />
             )}
