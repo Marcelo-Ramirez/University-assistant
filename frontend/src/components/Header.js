@@ -41,7 +41,7 @@ const Header = ({ className }) => {
             </div>
 
             {/* Ícono de usuario posicionado al final con margen derecho */}
-            <div className="absolute right-4">
+            <div className="absolute right-4 md:right-10"> {/* con rigth aumentamos el tamaño */}
                 <button onClick={handleRegisterClick}>
                     <img src={user_icon} alt="User icon" className="h-8 w-8" />
                 </button>
