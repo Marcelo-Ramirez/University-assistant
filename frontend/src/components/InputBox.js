@@ -3,6 +3,7 @@ import BotContext from "../context/BotContext";
 import { useInputFocus } from "../context/InputFocusContext";
 import ChatGlobalContext from "../context/ChatGlobalContext";
 import { useLocation } from "react-router-dom";
+import SendIcon from '../assets/images/send_icon.svg';
 
 function InputBox({ className }) {
     const location = useLocation();
@@ -55,7 +56,7 @@ function InputBox({ className }) {
                 disabled={isSending}
                 className={`text-white px-4 ml-2 py-2 rounded ${isSending ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'}`}
             >
-                Enviar
+                <img src={SendIcon} alt="Enviar" className="w-5 h-5" />
             </button>
         </form>
     );
