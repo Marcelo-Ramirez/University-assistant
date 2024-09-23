@@ -13,7 +13,7 @@ def register_sockets(socketio):
         c = conn.cursor()
         c.execute(
             """
-            SELECT p.texto, u.nombre, u.carrera, p.fecha
+            SELECT  p.id, p.texto, u.nombre, u.carrera, p.fecha
             FROM Preguntas p
             LEFT JOIN Usuarios u ON p.usuario_id = u.id
             ORDER BY p.ID DESC
@@ -24,7 +24,7 @@ def register_sockets(socketio):
         conn.close()
 
         formatted_preguntas = [
-            {"message": msg[0], "username": msg[1], "carrera": msg[2], "fecha": msg[3]} for msg in preguntas
+            {"id": msg[0], "message": msg[1], "username": msg[2], "carrera": msg[3], "fecha": msg[4]} for msg in preguntas
         ]
         emit("initial_preguntas", {"messages": formatted_preguntas})
 
@@ -37,7 +37,7 @@ def register_sockets(socketio):
         c = conn.cursor()
         c.execute(
             """
-            SELECT p.texto, u.nombre, u.carrera, p.fecha
+            SELECT  p.id, p.texto, u.nombre, u.carrera, p.fecha
             FROM Preguntas p
             LEFT JOIN Usuarios u ON p.usuario_id = u.id
             ORDER BY p.ID DESC
@@ -48,12 +48,13 @@ def register_sockets(socketio):
         conn.close()
 
         formatted_preguntas = [
-            {"message": msg[0], "username": msg[1], "carrera": msg[2], "fecha": msg[3]} for msg in preguntas
+            {"id": msg[0], "message": msg[1], "username": msg[2], "carrera": msg[3], "fecha": msg[4]} for msg in preguntas
         ]
         has_more = len(preguntas) == limit
 
         emit("more_preguntas", {"messages": formatted_preguntas, "has_more": has_more})
 
+    
     @socketio.on("send_pregunta")
     def handle_send_pregunta(data):
         token = data["token"]
@@ -78,7 +79,7 @@ def register_sockets(socketio):
 
         c.execute(
             """
-            SELECT p.texto, u.nombre, u.carrera, p.fecha
+            SELECT  p.id, p.texto, u.nombre, u.carrera, p.fecha
             FROM Preguntas p
             JOIN Usuarios u ON p.usuario_id = u.id
             ORDER BY p.ID DESC LIMIT 1
@@ -88,11 +89,48 @@ def register_sockets(socketio):
         conn.close()
 
         formatted_pregunta = {
-            "message": new_pregunta[0],
-            "username": new_pregunta[1],
-            "carrera": new_pregunta[2],
-            "fecha": new_pregunta[3]
+            "id": new_pregunta[0],
+            "message": new_pregunta[1],
+            "username": new_pregunta[2],
+            "carrera": new_pregunta[3],
+            "fecha": new_pregunta[4],
         }
+
+        # Imprimir el ID y el mensaje en la consola
+        print(f"ID enviado: {formatted_pregunta['id']}")
+        print(f"Mensaje enviado: {formatted_pregunta['message']}")
+
         emit("new_pregunta", formatted_pregunta, broadcast=True)
 
         return {"status": "success", "message": "Pregunta enviada exitosamente"}
+    @socketio.on("like_pregunta")
+    def handleLikeClick(data):
+        preguntas_id = data.get("messageId")
+        username = data.get("username")  # Obtener el username del data
+
+        if not preguntas_id:
+            return {"error": "ID de pregunta no proporcionado"}, 400
+
+        # Imprimir el ID del botón (pregunta) y el username en la consola
+        print(f"ID del botón de Like presionado: {preguntas_id}")
+        print(f"Username que dio Like: {username}")
+
+        # Conectar a la base de datos
+        conn = sqlite3.connect(DATABASE)
+        c = conn.cursor()
+
+        # Usar un valor fijo para usuarios_id, por ejemplo 1
+
+        # Guardar el like en la base de datos (ID de la pregunta y un valor fijo para el usuario)
+        c.execute(
+            "INSERT INTO Likes (preguntas_id, usuarios_id) VALUES (?, ?)",
+            (preguntas_id, username)
+        )
+        conn.commit()
+        conn.close()
+
+        # Emitir el evento a los clientes conectados
+        emit("like_added", {"pregunta_id": preguntas_id, "username": username}, broadcast=True)
+
+        return {"status": "success", "message": "Like recibido y guardado en la base de datos"}
+

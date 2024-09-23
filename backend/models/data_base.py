@@ -58,11 +58,11 @@ def init_db():
     c.execute('''
     CREATE TABLE IF NOT EXISTS Likes (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        respuesta_id INTEGER,
-        usuario_id INTEGER,
+        preguntas_id INTEGER,
+        usuarios_id TEXT,
+        contador INTEGER,
         fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (respuesta_id) REFERENCES Respuestas(id),
-        FOREIGN KEY (usuario_id) REFERENCES Usuarios(id)
+        FOREIGN KEY (preguntas_id) REFERENCES Preguntas(id)
     )
     ''')
     

@@ -1,28 +1,24 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import chatbot_icon from '../assets/images/chatbot_icon.png';
 import user_icon from '../assets/images/user_icon.png';
-import { useLocation } from "react-router-dom"; // Importar useLocation
+import { useLocation } from "react-router-dom";
+import { io } from "socket.io-client"; // Importa el cliente de SocketIO
 
-function SCMessage({ text, sender }) {
+const socket = io(window.origin); // Conectar con el servidor SocketIO
+
+function SCMessage({ text, sender, id }) {
     const isUser = sender === 'user';
     const icon = isUser
         ? <img src={user_icon} alt="User Icon" className="h-8 w-8 rounded-full" />
-        : <img src={chatbot_icon} alt="Chatbot Icon" className=
-            "h-8 w-8 rounded-full" />;
+        : <img src={chatbot_icon} alt="Chatbot Icon" className="h-8 w-8 rounded-full" />;
     const { username, carrera, fecha } = sender;
 
     // PARA OBTENER LA HORA EN QUE SE ENVIO EL MENSAJE
     const fechaActual = new Date();
-    
     const fechaComentario = fecha;
 
-    // Convertir la fecha del comentario a un objeto Date
     const fechaComentarioDate = new Date(fechaComentario);
-
-    // Calcular la diferencia en milisegundos
     const diferenciaTiempo = fechaActual - fechaComentarioDate;
-
-    // Convertir la diferencia de tiempo a unidades legibles
     const segundos = Math.floor(diferenciaTiempo / 1000);
     const minutos = Math.floor(segundos / 60);
     const horas = Math.floor(minutos / 60);
@@ -31,7 +27,6 @@ function SCMessage({ text, sender }) {
     const meses = Math.floor(días / 30);
     const años = Math.floor(días / 365);
 
-    // Función para obtener el tiempo transcurrido
     function obtenerTiempoTranscurrido() {
         if (años > 0) {
             return ` hace ${años} año${años > 1 ? 's' : ''}`;
@@ -49,14 +44,20 @@ function SCMessage({ text, sender }) {
             return ` hace ${segundos} segundo${segundos > 1 ? 's' : ''}`;
         }
     }
-    //// FIN DE LA FUNCION
-  // Hook para detectar cambios de ruta y obtener la hora actual
-  const location = useLocation();
-  useEffect(() => {
-      const currentTime = new Date().toLocaleTimeString();
-      console.log(`La ruta ha cambiado. Hora actual: ${currentTime}`);
-  }, [location]); // Se ejecuta cada vez que cambia la ruta
 
+    const location = useLocation();
+    useEffect(() => {
+        const currentTime = new Date().toLocaleTimeString();
+        console.log(`La ruta ha cambiado. Hora actual: ${currentTime}`);
+    }, [location]);
+
+    // Función para manejar el clic en el botón Like usando SocketIO
+    const handleLikeClick = () => {
+        console.log(`Botón de Like con ID: ${id}`);
+
+        // Emitir evento de like usando SocketIO con el username incluido
+        socket.emit("like_pregunta", { messageId: id, username });
+    };
 
     return (
         <div className={`flex flex-col mb-4 ${isUser ? 'bg-blue-100 text-right' : 'bg-gray-100 text-left'} rounded-lg`}>
@@ -64,14 +65,16 @@ function SCMessage({ text, sender }) {
                 {icon}
                 <div className="ml-2">
                     <span className="font-semibold text-sm">{username}</span>
-                    <span className="text-xs text-gray-500">{
-                        obtenerTiempoTranscurrido()
-                    }</span>
+                    <span className="text-xs text-gray-500">{obtenerTiempoTranscurrido()}</span>
                     <span className="block text-xs text-gray-500">{carrera}</span>
-                    
                 </div>
             </div>
             <p className="text-sm">{text}</p>
+            <div className="flex justify-start mt-2">
+                <button id={`${id}`} onClick={handleLikeClick}>
+                    Like
+                </button>
+            </div>
         </div>
     );
 }

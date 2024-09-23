@@ -15,6 +15,7 @@ function ChatBox({ className }) {
     // Determinar el contexto según la ruta actual
     const context = location.pathname === "/bot" ? BotContext : ChatGlobalContext;
     const { messages, loadMoreMessages, hasMoreMessages } = useContext(context);
+    
     // Manejar el scroll para cargar más mensajes si estamos en la parte superior
     const handleScroll = () => {
         const container = containerRef.current;
@@ -38,8 +39,6 @@ function ChatBox({ className }) {
     useEffect(() => {
         scrollToBottom();
     }, [location.pathname, messages]);
-
-    
 
     // Desplazar hacia abajo
     const scrollToBottom = () => {
@@ -70,17 +69,19 @@ function ChatBox({ className }) {
             className={`${className} overflow-y-auto h-full flex-1 bg-gray-100 relative`}
             onScroll={location.pathname === "/chat" ? handleScroll : undefined}
         >
-            {loading && hasMoreMessages &&(
+            {loading && hasMoreMessages && (
                 <div className="absolute top-0 left-0 right-0 bg-white text-center py-2">
                     Cargando mensajes antiguos...
                 </div>
             )}
 
-            {messages.map((msg, index) =>
-                location.pathname === "/bot"
+            {messages.map((msg, index) => {
+            
+
+                return location.pathname === "/bot"
                     ? <MessageBot key={index} text={msg.text} sender={msg.sender} />
-                    : <SCMessage key={index} text={msg.message} sender={msg} />
-            )}
+                    : <SCMessage key={index} text={msg.message} sender={msg} id={msg.id} />;
+            })}
             <div ref={messagesEndRef} />
         </div>
     );
