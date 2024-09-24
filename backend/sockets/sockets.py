@@ -1,6 +1,6 @@
 from flask_socketio import emit
 import sqlite3
-from flask_jwt_extended import decode_token
+from flask_jwt_extended import decode_token, jwt_required, get_jwt_identity
 from datetime import datetime
 import pytz
 from models.data_base import DATABASE
@@ -105,32 +105,69 @@ def register_sockets(socketio):
         return {"status": "success", "message": "Pregunta enviada exitosamente"}
     @socketio.on("like_pregunta")
     def handleLikeClick(data):
-        preguntas_id = data.get("messageId")
-        username = data.get("username")  # Obtener el username del data
+        preguntas_id = data.get("messageId")  # ID de la pregunta
+        username_creador = data.get("username")  # Username del creador de la pregunta
+        token = data["token"]
+        try:
+            decoded_token = decode_token(token)
+            username_like = decoded_token["sub"]
+            print(f"Usuario que dio eadas: {username_like}") 
+        except:
+            return {"error": "Invalid token"}
+        # Obtener el nombre del usuario autenticado o asignar "anónimo"
+       
 
-        if not preguntas_id:
-            return {"error": "ID de pregunta no proporcionado"}, 400
-
-        # Imprimir el ID del botón (pregunta) y el username en la consola
-        print(f"ID del botón de Like presionado: {preguntas_id}")
-        print(f"Username que dio Like: {username}")
-
-        # Conectar a la base de datos
         conn = sqlite3.connect(DATABASE)
         c = conn.cursor()
 
-        # Usar un valor fijo para usuarios_id, por ejemplo 1
+        # Verificar si el like ya existe para este usuario
+        c.execute("SELECT * FROM Likes WHERE preguntas_id = ? AND usuario_like = ?", (preguntas_id, username_like))
+        like_exists = c.fetchone()
 
-        # Guardar el like en la base de datos (ID de la pregunta y un valor fijo para el usuario)
-        c.execute(
-            "INSERT INTO Likes (preguntas_id, usuarios_id) VALUES (?, ?)",
-            (preguntas_id, username)
-        )
+        if like_exists:
+            # Si el usuario ya ha dado like, decrementamos el contador (deslike)
+            c.execute("UPDATE Likes SET contador = contador - 1 WHERE id = ?", (like_exists[0],))
+            if like_exists[4] <= 1:  # Solo eliminamos si el contador es menor o igual a 1
+                c.execute("DELETE FROM Likes WHERE id = ?", (like_exists[0],))
+        else:
+            # Si el like no existe para este usuario, entonces es un nuevo like
+            # Se debe verificar si hay likes de otros usuarios
+            c.execute("SELECT * FROM Likes WHERE preguntas_id = ?", (preguntas_id,))
+            existing_likes = c.fetchall()
+
+            if existing_likes:
+                # Si hay likes de otros usuarios, simplemente sumamos 1 al contador
+                c.execute("UPDATE Likes SET contador = contador + 1 WHERE preguntas_id = ?", (preguntas_id,))
+            else:
+                # Si no hay likes, insertamos un nuevo registro
+                c.execute(
+                    "INSERT INTO Likes (preguntas_id, usuarios_id, usuario_like, contador) VALUES (?, ?, ?, ?)",
+                    (preguntas_id, username_creador, username_like, 1)
+                )
+
         conn.commit()
+        
+        # Obtener el nuevo contador de likes después de actualizar
+        c.execute("SELECT SUM(contador) FROM Likes WHERE preguntas_id = ?", (preguntas_id,))
+        total_likes = c.fetchone()[0] or 0  # Sumar los likes de la pregunta
+
         conn.close()
 
-        # Emitir el evento a los clientes conectados
-        emit("like_added", {"pregunta_id": preguntas_id, "username": username}, broadcast=True)
+        # Emitir el evento "like_added" al frontend con el nuevo contador
+        emit("like_added", {"pregunta_id": preguntas_id, "total_likes": total_likes}, broadcast=True)
 
         return {"status": "success", "message": "Like recibido y guardado en la base de datos"}
 
+    @socketio.on("get_like_count")
+    def get_like_count(preguntas_id):
+        conn = sqlite3.connect(DATABASE)
+        c = conn.cursor()
+
+        # Obtener el total de likes para la pregunta dada
+        c.execute("SELECT SUM(contador) FROM Likes WHERE preguntas_id = ?", (preguntas_id,))
+        total_likes = c.fetchone()[0] or 0  # Si no hay likes, devolver 0
+
+        conn.close()
+
+        # Enviar de vuelta el conteo de likes al cliente
+        emit("like_count_response", {"preguntas_id": preguntas_id, "total_likes": total_likes})

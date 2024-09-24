@@ -1,62 +1,88 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import chatbot_icon from '../assets/images/chatbot_icon.png';
 import user_icon from '../assets/images/user_icon.png';
-import { useLocation } from "react-router-dom";
-import { io } from "socket.io-client"; // Importa el cliente de SocketIO
+import { io } from "socket.io-client";
 
-const socket = io(window.origin); // Conectar con el servidor SocketIO
+// Conexión al socket
+const socket = io(window.origin);
 
 function SCMessage({ text, sender, id }) {
     const isUser = sender === 'user';
     const icon = isUser
         ? <img src={user_icon} alt="User Icon" className="h-8 w-8 rounded-full" />
         : <img src={chatbot_icon} alt="Chatbot Icon" className="h-8 w-8 rounded-full" />;
+    
     const { username, carrera, fecha } = sender;
 
-    // PARA OBTENER LA HORA EN QUE SE ENVIO EL MENSAJE
-    const fechaActual = new Date();
-    const fechaComentario = fecha;
-
-    const fechaComentarioDate = new Date(fechaComentario);
-    const diferenciaTiempo = fechaActual - fechaComentarioDate;
-    const segundos = Math.floor(diferenciaTiempo / 1000);
-    const minutos = Math.floor(segundos / 60);
-    const horas = Math.floor(minutos / 60);
-    const días = Math.floor(horas / 24);
-    const semanas = Math.floor(días / 7);
-    const meses = Math.floor(días / 30);
-    const años = Math.floor(días / 365);
-
-    function obtenerTiempoTranscurrido() {
-        if (años > 0) {
-            return ` hace ${años} año${años > 1 ? 's' : ''}`;
-        } else if (meses > 0) {
-            return ` hace ${meses} mes${meses > 1 ? 'es' : ''}`;
-        } else if (semanas > 0) {
-            return ` hace ${semanas} semana${semanas > 1 ? 's' : ''}`;
-        } else if (días > 0) {
-            return ` hace ${días} día${días > 1 ? 's' : ''}`;
-        } else if (horas > 0) {
-            return ` hace ${horas} hora${horas > 1 ? 's' : ''}`;
-        } else if (minutos > 0) {
-            return ` hace ${minutos} minuto${minutos > 1 ? 's' : ''}`;
-        } else {
-            return ` hace ${segundos} segundo${segundos > 1 ? 's' : ''}`;
-        }
-    }
-
-    const location = useLocation();
+    // Estado para el contador de likes
+    const [likeCount, setLikeCount] = useState(0);
+    const [hasLiked, setHasLiked] = useState(false); // Estado para controlar si el usuario ya ha dado like
+    // Efecto para obtener el contador de likes al cargar el componente
     useEffect(() => {
-        const currentTime = new Date().toLocaleTimeString();
-        console.log(`La ruta ha cambiado. Hora actual: ${currentTime}`);
-    }, [location]);
+        // Solicitar el contador de likes al cargar el componente
+        socket.emit("get_like_count", id);
+
+        // Escuchar la respuesta del servidor
+        socket.on("like_count_response", ({ preguntas_id, total_likes }) => {
+            if (preguntas_id === id) {
+                setLikeCount(total_likes);
+            }
+        });
+
+        // Cleanup del efecto
+        return () => {
+            socket.off("like_count_response");
+        };
+    }, [id]);
 
     // Función para manejar el clic en el botón Like usando SocketIO
     const handleLikeClick = () => {
-        console.log(`Botón de Like con ID: ${id}`);
+        const token = localStorage.getItem('token'); ;
 
-        // Emitir evento de like usando SocketIO con el username incluido
-        socket.emit("like_pregunta", { messageId: id, username });
+        // Emitir el evento de like
+        socket.emit("like_pregunta", { messageId: id, username, token });
+
+        // Actualizar localmente el contador de likes basado en si el usuario ha dado like
+        if (hasLiked) {
+            // Si el usuario ya ha dado like, decrementamos el contador
+            setLikeCount(prevCount => prevCount - 1);
+        } else {
+            // Si el usuario no ha dado like, incrementamos el contador
+            setLikeCount(prevCount => prevCount + 1);
+        }
+
+        // Alternar el estado de hasLiked
+        setHasLiked(prevState => !prevState);
+    };
+
+    // Para obtener la hora en que se envió el mensaje
+    const obtenerTiempoTranscurrido = () => {
+        const fechaComentarioDate = new Date(fecha);
+        const fechaActual = new Date();
+        const diferenciaTiempo = fechaActual - fechaComentarioDate;
+        const segundos = Math.floor(diferenciaTiempo / 1000);
+        const minutos = Math.floor(segundos / 60);
+        const horas = Math.floor(minutos / 60);
+        const días = Math.floor(horas / 24);
+        const semanas = Math.floor(días / 7);
+        const meses = Math.floor(días / 30);
+        const años = Math.floor(días / 365);
+
+        if (años > 0) {
+            return `hace ${años} año${años > 1 ? 's' : ''}`;
+        } else if (meses > 0) {
+            return `hace ${meses} mes${meses > 1 ? 'es' : ''}`;
+        } else if (semanas > 0) {
+            return `hace ${semanas} semana${semanas > 1 ? 's' : ''}`;
+        } else if (días > 0) {
+            return `hace ${días} día${días > 1 ? 's' : ''}`;
+        } else if (horas > 0) {
+            return `hace ${horas} hora${horas > 1 ? 's' : ''}`;
+        } else if (minutos > 0) {
+            return `hace ${minutos} minuto${minutos > 1 ? 's' : ''}`;
+        } else {
+            return `hace ${segundos} segundo${segundos > 1 ? 's' : ''}`;
+        }
     };
 
     return (
@@ -72,8 +98,9 @@ function SCMessage({ text, sender, id }) {
             <p className="text-sm">{text}</p>
             <div className="flex justify-start mt-2">
                 <button id={`${id}`} onClick={handleLikeClick}>
-                    Like
+                {hasLiked ? '👍' : '👎'} {/* Emoji de like o deslike */}
                 </button>
+                <span className="ml-2">{likeCount}</span> {/* Mostrar contador de likes */}
             </div>
         </div>
     );

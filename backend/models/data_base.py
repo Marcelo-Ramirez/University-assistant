@@ -60,6 +60,7 @@ def init_db():
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         preguntas_id INTEGER,
         usuarios_id TEXT,
+        usuario_like INTEGER,
         contador INTEGER,
         fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (preguntas_id) REFERENCES Preguntas(id)
