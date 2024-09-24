@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import chatbot_icon from '../assets/images/chatbot_icon.png';
 import user_icon from '../assets/images/user_icon.png';
 import { io } from "socket.io-client";
+import { useLocation } from 'react-router-dom'; // Importar useLocation para detectar cambios de ruta
 
 // Conexión al socket
 const socket = io(window.origin);
@@ -11,22 +12,29 @@ function SCMessage({ text, sender, id }) {
     const icon = isUser
         ? <img src={user_icon} alt="User Icon" className="h-8 w-8 rounded-full" />
         : <img src={chatbot_icon} alt="Chatbot Icon" className="h-8 w-8 rounded-full" />;
-    
+
     const { username, carrera, fecha } = sender;
 
     // Estado para el contador de likes y si el usuario ha dado like
     const [likeCount, setLikeCount] = useState(0);
-    const [hasLiked, setHasLiked] = useState(false); // Estado para controlar si el usuario ya ha dado like
+    const [hasLiked, setHasLiked] = useState(false);
+
+    const location = useLocation(); // Obtener la ubicación actual
 
     // Efecto para obtener el contador de likes y el estado de like al cargar el componente
-    useEffect(() => {
+    const loadLikeData = () => {
         const token = localStorage.getItem('token');
 
-        // Solicitar el contador de likes y el estado de like del usuario al cargar el componente
+        // Solicitar el contador de likes y el estado de like del usuario
         socket.emit("get_like_count", id);
         if (token) {
             socket.emit("check_user_like", { messageId: id, token });
         }
+    };
+
+    useEffect(() => {
+        // Cargar datos de likes cuando se monte el componente
+        loadLikeData();
 
         // Escuchar la respuesta del servidor sobre el contador de likes
         const handleLikeCountResponse = ({ preguntas_id, total_likes }) => {
@@ -51,6 +59,15 @@ function SCMessage({ text, sender, id }) {
             socket.off("user_like_status", handleUserLikeStatus);
         };
     }, [id]);
+
+    // Efecto para detectar cambios de ruta
+    useEffect(() => {
+        // Comprobar si la ruta actual es "loyochat"
+        if (location.pathname === '/loyochat') {
+            console.log("Cambiado a ruta: loyochat");
+            loadLikeData(); // Volver a cargar datos de likes al cambiar a loyochat
+        }
+    }, [location.pathname, id]);
 
     // Función para manejar el clic en el botón Like usando SocketIO
     const handleLikeClick = () => {

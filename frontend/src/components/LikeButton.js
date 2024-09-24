@@ -1,63 +1,53 @@
-import React, { useState, useEffect } from 'react';
+import { io } from "socket.io-client";
 
-const LikeButton = ({ id, username, initialLikes }) => {
-    // Estado para saber si el usuario ya ha dado like
-    const [liked, setLiked] = useState(false);
-    const [likesCount, setLikesCount] = useState(initialLikes); // Estado para el conteo de likes
+// Conexión al socket
+const socket = io(window.origin);
 
-    const handleClick = async () => {
-        console.log('Botón presionado. Estado actual:', liked);
+// Función para obtener el contador de likes
+export const getLikeCount = (id, setLikeCount) => {
+    socket.emit("get_like_count", id);
 
-        // Determina la cantidad a enviar según el estado actual
-        const newQuantity = liked ? -1 : 1; // Si ya le dieron like, disminuir; de lo contrario, aumentar.
-
-        console.log('Cantidad a enviar:', newQuantity);
-
-        try {
-            const response = await fetch(`${window.origin}/api/likes`, { // Usar window.origin para la URL
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    idpregunta: id,
-                    usuario: username,
-                }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Error al guardar el like');
-            }
-
-            const data = await response.json();
-            console.log('Like guardado:', data);
-
-            // Cambia el estado del like
-            setLiked(!liked); // Alterna el estado de liked
-            const updatedLikesCount = likesCount + newQuantity; // Actualiza el conteo de likes
-            setLikesCount(updatedLikesCount); // Incrementa o decrementa el conteo
-
-            console.log('Nuevo estado de liked:', !liked);
-            console.log('Total de likes:', updatedLikesCount);
-        } catch (error) {
-            console.error('Error:', error);
+    const handleLikeCountResponse = ({ preguntas_id, total_likes }) => {
+        if (preguntas_id === id) {
+            setLikeCount(total_likes);
         }
     };
 
-    useEffect(() => {
-        console.log('Estado de liked cambiado a:', liked);
-    }, [liked]);
+    socket.on("like_count_response", handleLikeCountResponse);
 
-    useEffect(() => {
-        console.log('Total de likes actualizado a:', likesCount);
-    }, [likesCount]);
+    return () => {
+        socket.off("like_count_response", handleLikeCountResponse);
+    };
+};
 
-    return (
-        <button onClick={handleClick} className="flex items-center">
-            <span className={`mr-1 ${liked ? 'text-blue-500' : 'text-gray-500'}`}>
-                {liked ? '👎' : '👍'} {/* Cambiar ícono según el estado */}
-            </span>
-            {liked ? 'Dislike' : 'Like'} ({likesCount}) {/* Mostrar el conteo de likes */}
-        </button>
-    );
+// Función para obtener el estado de like del usuario
+export const checkUserLikeStatus = (id, setHasLiked) => {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+        socket.emit("check_user_like", { messageId: id, token });
+    }
+
+    const handleUserLikeStatus = ({ preguntas_id, has_liked }) => {
+        if (preguntas_id === id) {
+            setHasLiked(has_liked);
+        }
+    };
+
+    socket.on("user_like_status", handleUserLikeStatus);
+
+    return () => {
+        socket.off("user_like_status", handleUserLikeStatus);
+    };
+};
+
+// Función para manejar el clic en el botón de like
+export const handleLikeClick = (id, username, hasLiked, setLikeCount, setHasLiked) => {
+    const token = localStorage.getItem('token');
+
+    socket.emit("like_pregunta", { messageId: id, username, token });
+
+    // Actualizar el estado local de likes
+    setLikeCount(prevCount => hasLiked ? prevCount - 1 : prevCount + 1);
+    setHasLiked(prevState => !prevState);
 };
