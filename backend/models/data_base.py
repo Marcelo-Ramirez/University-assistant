@@ -61,12 +61,18 @@ def init_db():
         preguntas_id INTEGER,
         usuarios_id TEXT,
         usuario_like INTEGER,
-        contador INTEGER,
         fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (preguntas_id) REFERENCES Preguntas(id)
     )
     ''')
-    
+    c.execute('''
+    CREATE TABLE IF NOT EXISTS contadores (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        preguntas_id INTEGER,
+        contador INTEGER,
+        FOREIGN KEY (preguntas_id) REFERENCES Preguntas(id)
+    )
+    ''')
     c.execute('''
     CREATE TABLE IF NOT EXISTS Messages (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

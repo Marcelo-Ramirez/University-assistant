@@ -14,43 +14,53 @@ function SCMessage({ text, sender, id }) {
     
     const { username, carrera, fecha } = sender;
 
-    // Estado para el contador de likes
+    // Estado para el contador de likes y si el usuario ha dado like
     const [likeCount, setLikeCount] = useState(0);
     const [hasLiked, setHasLiked] = useState(false); // Estado para controlar si el usuario ya ha dado like
-    // Efecto para obtener el contador de likes al cargar el componente
-    useEffect(() => {
-        // Solicitar el contador de likes al cargar el componente
-        socket.emit("get_like_count", id);
 
-        // Escuchar la respuesta del servidor
-        socket.on("like_count_response", ({ preguntas_id, total_likes }) => {
+    // Efecto para obtener el contador de likes y el estado de like al cargar el componente
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+
+        // Solicitar el contador de likes y el estado de like del usuario al cargar el componente
+        socket.emit("get_like_count", id);
+        if (token) {
+            socket.emit("check_user_like", { messageId: id, token });
+        }
+
+        // Escuchar la respuesta del servidor sobre el contador de likes
+        const handleLikeCountResponse = ({ preguntas_id, total_likes }) => {
             if (preguntas_id === id) {
                 setLikeCount(total_likes);
             }
-        });
+        };
+
+        // Escuchar la respuesta del servidor sobre el estado de like del usuario
+        const handleUserLikeStatus = ({ preguntas_id, has_liked }) => {
+            if (preguntas_id === id) {
+                setHasLiked(has_liked);
+            }
+        };
+
+        socket.on("like_count_response", handleLikeCountResponse);
+        socket.on("user_like_status", handleUserLikeStatus);
 
         // Cleanup del efecto
         return () => {
-            socket.off("like_count_response");
+            socket.off("like_count_response", handleLikeCountResponse);
+            socket.off("user_like_status", handleUserLikeStatus);
         };
     }, [id]);
 
     // Función para manejar el clic en el botón Like usando SocketIO
     const handleLikeClick = () => {
-        const token = localStorage.getItem('token'); ;
+        const token = localStorage.getItem('token');
 
         // Emitir el evento de like
         socket.emit("like_pregunta", { messageId: id, username, token });
 
         // Actualizar localmente el contador de likes basado en si el usuario ha dado like
-        if (hasLiked) {
-            // Si el usuario ya ha dado like, decrementamos el contador
-            setLikeCount(prevCount => prevCount - 1);
-        } else {
-            // Si el usuario no ha dado like, incrementamos el contador
-            setLikeCount(prevCount => prevCount + 1);
-        }
-
+        setLikeCount(prevCount => hasLiked ? prevCount - 1 : prevCount + 1);
         // Alternar el estado de hasLiked
         setHasLiked(prevState => !prevState);
     };
@@ -98,7 +108,7 @@ function SCMessage({ text, sender, id }) {
             <p className="text-sm">{text}</p>
             <div className="flex justify-start mt-2">
                 <button id={`${id}`} onClick={handleLikeClick}>
-                {hasLiked ? '👍' : '👎'} {/* Emoji de like o deslike */}
+                    {hasLiked ? '👍' : '👎'} {/* Emoji de like o deslike */}
                 </button>
                 <span className="ml-2">{likeCount}</span> {/* Mostrar contador de likes */}
             </div>
