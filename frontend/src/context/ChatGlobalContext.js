@@ -134,7 +134,7 @@ newSocket.on('more_preguntas', (data) => {
         });
     };    
 
-    const data = { messages, handleSend, input, setInput, isSending, loadMoreMessages, offset, hasMoreMessages };
+    const data = { messages, handleSend, input, setInput, isSending, loadMoreMessages, offset, hasMoreMessages, newSocket };
     return (
         <ChatGlobalContext.Provider value={data}>
             {children}
@@ -142,5 +142,5 @@ newSocket.on('more_preguntas', (data) => {
     );
 };
 
-export { ChatGlobalProvider };
+export { ChatGlobalProvider};
 export default ChatGlobalContext;

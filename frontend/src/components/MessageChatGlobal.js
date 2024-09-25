@@ -1,11 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import chatbot_icon from '../assets/images/chatbot_icon.png';
 import user_icon from '../assets/images/user_icon.png';
-import { io } from "socket.io-client";
-import { useLocation } from 'react-router-dom'; // Importar useLocation para detectar cambios de ruta
-
-// Conexión al socket
-const socket = io(window.origin);
+import LikeButton from './LikeButton'; // Importar el nuevo componente LikeButton
 
 function SCMessage({ text, sender, id }) {
     const isUser = sender === 'user';
@@ -14,73 +10,7 @@ function SCMessage({ text, sender, id }) {
         : <img src={chatbot_icon} alt="Chatbot Icon" className="h-8 w-8 rounded-full" />;
 
     const { username, carrera, fecha } = sender;
-
-    // Estado para el contador de likes y si el usuario ha dado like
-    const [likeCount, setLikeCount] = useState(0);
-    const [hasLiked, setHasLiked] = useState(false);
-
-    const location = useLocation(); // Obtener la ubicación actual
-
-    // Efecto para obtener el contador de likes y el estado de like al cargar el componente
-    const loadLikeData = () => {
-        const token = localStorage.getItem('token');
-
-        // Solicitar el contador de likes y el estado de like del usuario
-        socket.emit("get_like_count", id);
-        if (token) {
-            socket.emit("check_user_like", { messageId: id, token });
-        }
-    };
-
-    useEffect(() => {
-        // Cargar datos de likes cuando se monte el componente
-        loadLikeData();
-
-        // Escuchar la respuesta del servidor sobre el contador de likes
-        const handleLikeCountResponse = ({ preguntas_id, total_likes }) => {
-            if (preguntas_id === id) {
-                setLikeCount(total_likes);
-            }
-        };
-
-        // Escuchar la respuesta del servidor sobre el estado de like del usuario
-        const handleUserLikeStatus = ({ preguntas_id, has_liked }) => {
-            if (preguntas_id === id) {
-                setHasLiked(has_liked);
-            }
-        };
-
-        socket.on("like_count_response", handleLikeCountResponse);
-        socket.on("user_like_status", handleUserLikeStatus);
-
-        // Cleanup del efecto
-        return () => {
-            socket.off("like_count_response", handleLikeCountResponse);
-            socket.off("user_like_status", handleUserLikeStatus);
-        };
-    }, [id]);
-
-    // Efecto para detectar cambios de ruta
-    useEffect(() => {
-        // Comprobar si la ruta actual es "loyochat"
-        if (location.pathname === '/loyochat') {
-            console.log("Cambiado a ruta: loyochat");
-            loadLikeData(); // Volver a cargar datos de likes al cambiar a loyochat
-        }
-    }, [location.pathname, id]);
-
-    // Función para manejar el clic en el botón Like usando SocketIO
-    const handleLikeClick = () => {
-        const token = localStorage.getItem('token');
-
-        // Emitir el evento de like
-        socket.emit("like_pregunta", { messageId: id, username, token });
-
-        // Actualizar localmente el contador de likes basado en si el usuario ha dado like
-        setLikeCount(prevCount => hasLiked ? prevCount - 1 : prevCount + 1);
-        // Alternar el estado de hasLiked
-        setHasLiked(prevState => !prevState);
-    };
+ 
 
     // Para obtener la hora en que se envió el mensaje
     const obtenerTiempoTranscurrido = () => {
@@ -123,12 +53,8 @@ function SCMessage({ text, sender, id }) {
                 </div>
             </div>
             <p className="text-sm">{text}</p>
-            <div className="flex justify-start mt-2">
-                <button id={`${id}`} onClick={handleLikeClick}>
-                    {hasLiked ? '👍' : '👎'} {/* Emoji de like o deslike */}
-                </button>
-                <span className="ml-2">{likeCount}</span> {/* Mostrar contador de likes */}
-            </div>
+            {/* Integrar el componente LikeButton aquí */}
+            <LikeButton messageId={id} username={username} />
         </div>
     );
 }

@@ -184,6 +184,7 @@ def register_sockets(socketio):
         emit("like_count_response", {"preguntas_id": preguntas_id, "total_likes": total_likes})
 
 
+
     @socketio.on("check_user_like")
     def check_user_like(data):
         preguntas_id = data.get("messageId")  # ID de la pregunta
