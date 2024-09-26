@@ -4,6 +4,7 @@ from flask_jwt_extended import JWTManager
 from flask_socketio import SocketIO
 from routes.routes import routes_bp
 from sockets.sockets import register_sockets
+from sockets.sockets_likes import register_likes
 from models.data_base import init_db
 
 app = Flask(__name__, static_folder="templates/static")
@@ -21,6 +22,7 @@ app.register_blueprint(routes_bp)
 
 # Registrar los sockets
 register_sockets(socketio)
+register_likes(socketio)
 
 if __name__ == "__main__":
     socketio.run(app, host="0.0.0.0", port=5000, debug=True)
