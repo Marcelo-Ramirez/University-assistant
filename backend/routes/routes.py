@@ -13,17 +13,19 @@ def check_route():
     if request.path not in known_routes and 'static' not in request.path:
         return render_template("index.html")
 
-# Rutas definidas
+# Ruta para servir la página principal (index.html)
 @routes_bp.route("/")
 def home():
     return render_template("index.html")
 
+# Ruta para obtener la respuesta del chatbot
 @routes_bp.route("/get", methods=["POST"])
 def get_bot_response():
     user_input = request.json["message"]
-    response = get_chatbot_response(user_input)
+    response = get_chatbot_response(user_input)  # Aquí llamas a tu función de chatbot
     return jsonify({"response": response})
 
+# Ruta para guardar un mensaje en la base de datos
 @routes_bp.route("/save", methods=["POST"])
 def save_message():
     user_input = request.json["message"]
@@ -32,8 +34,9 @@ def save_message():
     c.execute("INSERT INTO Messages (message) VALUES (?)", (user_input,))
     conn.commit()
     conn.close()
-    return jsonify({"response": "Gracias por el aporte"})
+    return jsonify({"response": "Mensaje guardado"})
 
+# Ruta para registrar un nuevo usuario
 @routes_bp.route("/register", methods=["POST"])
 def register():
     data = request.get_json()
@@ -54,6 +57,7 @@ def register():
     conn.close()
     return jsonify({"message": "User registered successfully"}), 201
 
+# Ruta para iniciar sesión y generar un token JWT
 @routes_bp.route("/login", methods=["POST"])
 def login():
     data = request.get_json()
